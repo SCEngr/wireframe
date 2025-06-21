@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Web Component Test</title>
+  <script type="module">
+    // 直接导入组件
+    import { WireButton, WireInput, WireCard, WireBadge, WireAvatar, WireAlert } from './dist/index.js';
+    
+    // 确保组件已注册
+    if(!customElements.get('wire-button')) {
+      customElements.define('wire-button', WireButton);
+    }
+    if(!customElements.get('wire-input')) {
+      customElements.define('wire-input', WireInput);
+    }
+    if(!customElements.get('wire-card')) {
+      customElements.define('wire-card', WireCard);
+    }
+    if(!customElements.get('wire-badge')) {
+      customElements.define('wire-badge', WireBadge);
+    }
+    if(!customElements.get('wire-avatar')) {
+      customElements.define('wire-avatar', WireAvatar);
+    }
+    if(!customElements.get('wire-alert')) {
+      customElements.define('wire-alert', WireAlert);
+    }
+    
+    // 页面加载完成后检查组件
+    window.addEventListener('DOMContentLoaded', () => {
+      console.log('页面加载完成，检查组件是否已注册:');
+      console.log('wire-button:', !!customElements.get('wire-button'));
+      console.log('wire-input:', !!customElements.get('wire-input'));
+      console.log('wire-card:', !!customElements.get('wire-card'));
+      console.log('wire-badge:', !!customElements.get('wire-badge'));
+      console.log('wire-avatar:', !!customElements.get('wire-avatar'));
+      console.log('wire-alert:', !!customElements.get('wire-alert'));
+      
+      // 检查组件的 Shadow DOM
+      setTimeout(() => {
+        const button = document.querySelector('wire-button');
+        if (button) {
+          console.log('按钮组件 Shadow DOM:', button.shadowRoot);
+        }
+      }, 100);
+    });
+  </script>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      padding: 2rem;
+    }
+    .component-section {
+      margin-bottom: 2rem;
+      padding: 1rem;
+      border: 1px solid #eaeaea;
+      border-radius: 0.5rem;
+    }
+    .component-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+    .component-demo {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <h1>Web Component 测试页面</h1>
+  
+  <div class="component-section">
+    <div class="component-title">按钮组件</div>
+    <div class="component-demo">
+      <wire-button variant="primary">主要按钮</wire-button>
+      <wire-button variant="secondary">次要按钮</wire-button>
+      <wire-button variant="outline">轮廓按钮</wire-button>
+      <wire-button variant="primary" disabled>禁用按钮</wire-button>
+    </div>
+  </div>
+  
+  <div class="component-section">
+    <div class="component-title">输入框组件</div>
+    <div class="component-demo">
+      <wire-input placeholder="请输入文本"></wire-input>
+      <wire-input label="用户名" placeholder="请输入用户名"></wire-input>
+      <wire-input label="密码" type="password" placeholder="请输入密码"></wire-input>
+      <wire-input label="禁用" placeholder="禁用状态" disabled></wire-input>
+    </div>
+  </div>
+  
+  <div class="component-section">
+    <div class="component-title">卡片组件</div>
+    <div class="component-demo">
+      <wire-card style="width: 300px;">
+        <div slot="header">卡片标题</div>
+        <div slot="content">这是卡片内容区域，可以放置任何内容。</div>
+        <div slot="footer">卡片底部</div>
+      </wire-card>
+    </div>
+  </div>
+  
+  <div class="component-section">
+    <div class="component-title">徽章组件</div>
+    <div class="component-demo">
+      <wire-badge variant="default">默认</wire-badge>
+      <wire-badge variant="primary">主要</wire-badge>
+      <wire-badge variant="success">成功</wire-badge>
+      <wire-badge variant="warning">警告</wire-badge>
+      <wire-badge variant="danger">危险</wire-badge>
+    </div>
+  </div>
+  
+  <div class="component-section">
+    <div class="component-title">头像组件</div>
+    <div class="component-demo">
+      <wire-avatar size="sm" initials="JS"></wire-avatar>
+      <wire-avatar size="md" initials="WF"></wire-avatar>
+      <wire-avatar size="lg"></wire-avatar>
+      <wire-avatar size="xl" shape="square"></wire-avatar>
+    </div>
+  </div>
+  
+  <div class="component-section">
+    <div class="component-title">警告组件</div>
+    <div class="component-demo">
+      <wire-alert variant="info" style="width: 100%;">这是一条信息提示</wire-alert>
+      <wire-alert variant="success" style="width: 100%;">这是一条成功提示</wire-alert>
+      <wire-alert variant="warning" style="width: 100%;">这是一条警告提示</wire-alert>
+      <wire-alert variant="error" style="width: 100%;">这是一条错误提示</wire-alert>
+      <wire-alert variant="info" dismissible style="width: 100%;">这是一条可关闭的提示</wire-alert>
+    </div>
+  </div>
+  
+  <script>
+    // 打开浏览器控制台查看组件注册和挂载情况
+    console.log('页面已加载');
+  </script>
+</body>
+</html>

@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Wireframe UI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../dist/index.js" type="module"></script>
+    <style>
+      body {
+        font-family: system-ui, -apple-system, sans-serif;
+        padding: 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+      .component-section {
+        margin-bottom: 3rem;
+        padding: 1.5rem;
+        border: 1px solid #eaeaea;
+        border-radius: 0.5rem;
+      }
+      .component-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+        color: #333;
+      }
+      .component-demo {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+        align-items: flex-start;
+      }
+      .code-example {
+        background-color: #f5f5f5;
+        padding: 1rem;
+        border-radius: 0.25rem;
+        font-family: monospace;
+        font-size: 0.875rem;
+        overflow-x: auto;
+      }
+      .component-description {
+        margin-bottom: 1rem;
+        color: #666;
+      }
+      .component-variants {
+        margin-top: 1rem;
+        padding-top: 1rem;
+        border-top: 1px dashed #eaeaea;
+      }
+      .variant-title {
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+        color: #666;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="mb-12">
+      <h1 class="text-4xl font-bold mb-2">Wireframe UI</h1>
+      <p class="text-gray-600">
+        A minimalist wireframe UI component library built with Web Components.
+      </p>
+    </header>
+
+    <main>
+      <!-- Panel Component -->
+      <section class="component-section" id="panel">
+        <h2 class="component-title">Panel</h2>
+        <p class="component-description">A collapsible content panel.</p>
+        <div class="component-demo" style="width: 100%">
+          <wire-panel style="width: 300px">
+            <span slot="header">Panel Header</span>
+            <div>Panel Content goes here.</div>
+          </wire-panel>
+          <wire-panel style="width: 300px" expanded>
+            <span slot="header">Expanded Panel</span>
+            <div>This panel is expanded by default.</div>
+          </wire-panel>
+        </div>
+        <pre class="code-example">
+&lt;wire-panel&gt;
+  &lt;span slot="header"&gt;Panel Header&lt;/span&gt;
+  &lt;div&gt;Panel Content goes here.&lt;/div&gt;
+&lt;/wire-panel&gt;
+
+&lt;wire-panel expanded&gt;
+  &lt;span slot="header"&gt;Expanded Panel&lt;/span&gt;
+  &lt;div&gt;This panel is expanded by default.&lt;/div&gt;
+&lt;/wire-panel&gt;</pre
+        >
+      </section>
+
+      <!-- Row Component -->
+      <section class="component-section" id="row">
+        <h2 class="component-title">Row</h2>
+        <p class="component-description">
+          A simple row layout for horizontal alignment.
+        </p>
+        <div class="component-demo" style="width: 100%">
+          <wire-row>
+            <wire-button>Button 1</wire-button>
+            <wire-button>Button 2</wire-button>
+            <wire-badge>Badge</wire-badge>
+          </wire-row>
+        </div>
+        <pre class="code-example">
+&lt;wire-row&gt;
+  &lt;wire-button&gt;Button 1&lt;/wire-button&gt;
+  &lt;wire-button&gt;Button 2&lt;/wire-button&gt;
+  &lt;wire-badge&gt;Badge&lt;/wire-badge&gt;
+&lt;/wire-row&gt;</pre
+        >
+      </section>
+
+      <!-- Section Component -->
+      <section class="component-section" id="section">
+        <h2 class="component-title">Section</h2>
+        <p class="component-description">
+          A container for grouping related content.
+        </p>
+        <div class="component-demo" style="width: 100%">
+          <wire-section style="width: 100%">
+            <span slot="header">Section Title</span>
+            <div>This is the content of the section.</div>
+            <div>More content here.</div>
+          </wire-section>
+        </div>
+        <pre class="code-example">
+&lt;wire-section&gt;
+  &lt;span slot="header"&gt;Section Title&lt;/span&gt;
+  &lt;div&gt;This is the content of the section.&lt;/div&gt;
+  &lt;div&gt;More content here.&lt;/div&gt;
+&lt;/wire-section&gt;</pre
+        >
+      </section>
+
+      <!-- Heading Component -->
+      <section class="component-section" id="heading">
+        <h2 class="component-title">Heading</h2>
+        <p class="component-description">
+          Displays text as a heading with different levels.
+        </p>
+        <div class="component-demo" style="width: 100%">
+          <wire-heading level="1">Heading Level 1</wire-heading>
+          <wire-heading level="2">Heading Level 2</wire-heading>
+          <wire-heading level="3">Heading Level 3</wire-heading>
+          <wire-heading level="4">Heading Level 4</wire-heading>
+        </div>
+        <pre class="code-example">
+&lt;wire-heading level="1"&gt;Heading Level 1&lt;/wire-heading&gt;
+&lt;wire-heading level="2"&gt;Heading Level 2&lt;/wire-heading&gt;
+&lt;wire-heading level="3"&gt;Heading Level 3&lt;/wire-heading&gt;
+&lt;wire-heading level="4"&gt;Heading Level 4&lt;/wire-heading&gt;</pre
+        >
+      </section>
+
+      <!-- Message Component -->
+      <section class="component-section" id="message">
+        <h2 class="component-title">Message</h2>
+        <p class="component-description">A simple message display block.</p>
+        <div class="component-demo" style="width: 100%">
+          <wire-message>This is a sample message.</wire-message>
+          <wire-message
+            >Another message with more content to show how it
+            wraps.</wire-message
+          >
+        </div>
+        <pre class="code-example">
+&lt;wire-message&gt;This is a sample message.&lt;/wire-message&gt;
+&lt;wire-message&gt;Another message with more content to show how it wraps.&lt;/wire-message&gt;</pre
+        >
+      </section>
+
+      <!-- Button 按钮组件 -->
+      <section class="component-section" id="button">
+        <h2 class="component-title">Button</h2>
+        <p class="component-description">
+          An interactive element to trigger actions.
+        </p>
+        <div class="component-demo">
+          <wire-button>Button</wire-button>
+        </div>
+        <pre class="code-example">
+&lt;wire-button&gt;Button&lt;/wire-button&gt;</pre
+        >
+      </section>
+
+      <!-- Input 输入框组件 -->
+      <section class="component-section" id="input">
+        <h2 class="component-title">Input</h2>
+        <p class="component-description">
+          A form control for collecting user input.
+        </p>
+        <div class="component-demo">
+          <wire-input placeholder="Input"></wire-input>
+          <wire-input
+            label="Labelled Input"
+            placeholder="Enter text"
+          ></wire-input>
+        </div>
+        <pre class="code-example">
+&lt;wire-input placeholder="Input"&gt;&lt;/wire-input&gt;
+&lt;wire-input label="Labelled Input" placeholder="Enter text"&gt;&lt;/wire-input&gt;</pre
+        >
+      </section>
+
+      <!-- Card 卡片组件 -->
+      <section class="component-section" id="card">
+        <h2 class="component-title">Card</h2>
+        <p class="component-description">A container for displaying content.</p>
+        <div class="component-demo" style="width: 100%">
+          <wire-card style="width: 300px">
+            <div slot="header">Card Title</div>
+            <div slot="content">
+              Card content area, can place any content here.
+            </div>
+            <div slot="footer">Card Footer</div>
+          </wire-card>
+        </div>
+        <pre class="code-example">
+&lt;wire-card&gt;
+  &lt;div slot="header"&gt;Card Title&lt;/div&gt;
+  &lt;div slot="content"&gt;Card content area, can place any content here.&lt;/div&gt;
+  &lt;div slot="footer"&gt;Card Footer&lt;/div&gt;
+&lt;/wire-card&gt;</pre
+        >
+      </section>
+
+      <!-- Badge 徽章组件 -->
+      <section class="component-section" id="badge">
+        <h2 class="component-title">Badge</h2>
+        <p class="component-description">
+          A small marker for displaying status or counts.
+        </p>
+        <div class="component-demo">
+          <wire-badge>New</wire-badge>
+          <wire-badge>99+</wire-badge>
+          <wire-badge>Tag</wire-badge>
+        </div>
+        <pre class="code-example">
+&lt;wire-badge&gt;New&lt;/wire-badge&gt;
+&lt;wire-badge&gt;99+&lt;/wire-badge&gt;
+&lt;wire-badge&gt;Tag&lt;/wire-badge&gt;</pre
+        >
+      </section>
+
+      <!-- Avatar 头像组件 -->
+      <section class="component-section" id="avatar">
+        <h2 class="component-title">Avatar</h2>
+        <p class="component-description">
+          Displays an image for a user or entity.
+        </p>
+        <div class="component-demo">
+          <wire-avatar></wire-avatar>
+          <wire-avatar shape="square"></wire-avatar>
+        </div>
+        <pre class="code-example">
+&lt;wire-avatar&gt;&lt;/wire-avatar&gt;
+&lt;wire-avatar shape="square"&gt;&lt;/wire-avatar&gt;</pre
+        >
+      </section>
+
+      <!-- Alert 提示组件 -->
+      <section class="component-section" id="alert">
+        <h2 class="component-title">Alert</h2>
+        <p class="component-description">
+          A message box for displaying important information.
+        </p>
+        <div class="component-demo" style="width: 100%">
+          <wire-alert style="width: 100%">This is an alert message.</wire-alert>
+        </div>
+        <pre class="code-example">
+&lt;wire-alert&gt;This is an alert message.&lt;/wire-alert&gt;</pre
+        >
+      </section>
+      <!-- Panel Component -->
+      <section class="component-section" id="panel">
+        <h2 class="component-title">Panel</h2>
+        <p class="component-description">
+          A container with header and content areas.
+        </p>
+        <div class="component-demo" style="width: 100%">
+          <wire-panel style="width: 100%">
+            <div slot="header">Panel Header</div>
+            <div>Panel content goes here. This can contain any content.</div>
+          </wire-panel>
+        </div>
+        <pre class="code-example">
+&lt;wire-panel&gt;
+  &lt;div slot="header"&gt;Panel Header&lt;/div&gt;
+  &lt;div&gt;Panel content goes here. This can contain any content.&lt;/div&gt;
+&lt;/wire-panel&gt;</pre
+        >
+      </section>
+
+      <!-- Row Component -->
+      <section class="component-section" id="row">
+        <h2 class="component-title">Row</h2>
+        <p class="component-description">
+          A horizontal layout container for organizing elements in a row.
+        </p>
+        <div class="component-demo" style="width: 100%">
+          <wire-row style="width: 100%">
+            <wire-badge>Item 1</wire-badge>
+            <wire-badge>Item 2</wire-badge>
+            <wire-badge>Item 3</wire-badge>
+          </wire-row>
+        </div>
+        <pre class="code-example">
+&lt;wire-row&gt;
+  &lt;wire-badge&gt;Item 1&lt;/wire-badge&gt;
+  &lt;wire-badge&gt;Item 2&lt;/wire-badge&gt;
+  &lt;wire-badge&gt;Item 3&lt;/wire-badge&gt;
+&lt;/wire-row&gt;</pre
+        >
+      </section>
+
+      <!-- Column Component -->
+      <section class="component-section" id="column">
+        <h2 class="component-title">Column</h2>
+        <p class="component-description">
+          A vertical layout container for organizing elements in a column.
+        </p>
+        <div class="component-demo" style="width: 100%">
+          <wire-column style="width: 100%">
+            <wire-badge>Item 1</wire-badge>
+            <wire-badge>Item 2</wire-badge>
+            <wire-badge>Item 3</wire-badge>
+          </wire-column>
+        </div>
+        <pre class="code-example">
+&lt;wire-column&gt;
+  &lt;wire-badge&gt;Item 1&lt;/wire-badge&gt;
+  &lt;wire-badge&gt;Item 2&lt;/wire-badge&gt;
+  &lt;wire-badge&gt;Item 3&lt;/wire-badge&gt;
+&lt;/wire-column&gt;</pre
+        >
+      </section>
+
+      <!-- Icon Component -->
+      <section class="component-section" id="icon">
+        <h2 class="component-title">Icon</h2>
+        <p class="component-description">
+          Simple icons based on Lucide icon set.
+        </p>
+        <div class="component-demo">
+          <wire-icon name="check"></wire-icon>
+          <wire-icon name="x"></wire-icon>
+          <wire-icon name="loader"></wire-icon>
+          <wire-icon name="chevron-down"></wire-icon>
+          <wire-icon name="chevron-right"></wire-icon>
+          <wire-icon name="tool"></wire-icon>
+        </div>
+        <pre class="code-example">
+&lt;wire-icon name="check"&gt;&lt;/wire-icon&gt;
+&lt;wire-icon name="x"&gt;&lt;/wire-icon&gt;
+&lt;wire-icon name="loader"&gt;&lt;/wire-icon&gt;
+&lt;wire-icon name="chevron-down"&gt;&lt;/wire-icon&gt;
+&lt;wire-icon name="chevron-right"&gt;&lt;/wire-icon&gt;
+&lt;wire-icon name="tool"&gt;&lt;/wire-icon&gt;</pre
+        >
+      </section>
+
+      <!-- Section Component -->
+      <section class="component-section" id="section">
+        <h2 class="component-title">Section</h2>
+        <p class="component-description">
+          A content section with optional header.
+        </p>
+        <div class="component-demo" style="width: 100%">
+          <wire-section style="width: 100%">
+            <div slot="header">Section Header</div>
+            <div>Section content goes here. This can contain any content.</div>
+          </wire-section>
+        </div>
+        <pre class="code-example">
+&lt;wire-section&gt;
+  &lt;div slot="header"&gt;Section Header&lt;/div&gt;
+  &lt;div&gt;Section content goes here. This can contain any content.&lt;/div&gt;
+&lt;/wire-section&gt;</pre
+        >
+      </section>
+
+      <!-- ExpandButton Component -->
+      <section class="component-section" id="expand-button">
+        <h2 class="component-title">ExpandButton</h2>
+        <p class="component-description">
+          A button for expanding/collapsing content.
+        </p>
+        <div class="component-demo">
+          <wire-expand-button></wire-expand-button>
+          <wire-expand-button expanded></wire-expand-button>
+        </div>
+        <pre class="code-example">
+&lt;wire-expand-button&gt;&lt;/wire-expand-button&gt;
+&lt;wire-expand-button expanded&gt;&lt;/wire-expand-button&gt;</pre
+        >
+      </section>
+
+      <!-- Message Component -->
+      <section class="component-section" id="message">
+        <h2 class="component-title">Message</h2>
+        <p class="component-description">A simple message display block.</p>
+        <div class="component-demo" style="width: 100%">
+          <wire-message>This is a sample message.</wire-message>
+          <wire-message
+            >Another message with more content to show how it
+            wraps.</wire-message
+          >
+        </div>
+        <pre class="code-example">
+&lt;wire-message&gt;This is a sample message.&lt;/wire-message&gt;
+&lt;wire-message&gt;Another message with more content to show how it wraps.&lt;/wire-message&gt;</pre
+        >
+      </section>
+
+      <!-- Heading Component -->
+      <section class="component-section" id="heading">
+        <h2 class="component-title">Heading</h2>
+        <p class="component-description">Headings with different levels.</p>
+        <div class="component-demo" style="width: 100%">
+          <wire-heading level="1">Heading Level 1</wire-heading>
+          <wire-heading level="2">Heading Level 2</wire-heading>
+          <wire-heading level="3">Heading Level 3</wire-heading>
+          <wire-heading level="4">Heading Level 4</wire-heading>
+        </div>
+        <pre class="code-example">
+&lt;wire-heading level="1"&gt;Heading Level 1&lt;/wire-heading&gt;
+&lt;wire-heading level="2"&gt;Heading Level 2&lt;/wire-heading&gt;
+&lt;wire-heading level="3"&gt;Heading Level 3&lt;/wire-heading&gt;
+&lt;wire-heading level="4"&gt;Heading Level 4&lt;/wire-heading&gt;</pre
+        >
+      </section>
+
+      <!-- StatusIndicator Component -->
+      <section class="component-section" id="status-indicator">
+        <h2 class="component-title">StatusIndicator</h2>
+        <p class="component-description">Indicators for different statuses.</p>
+        <div class="component-demo">
+          <wire-status-indicator status="success"></wire-status-indicator>
+          <wire-status-indicator status="failed"></wire-status-indicator>
+          <wire-status-indicator status="processing"></wire-status-indicator>
+          <wire-status-indicator></wire-status-indicator>
+        </div>
+        <pre class="code-example">
+&lt;wire-status-indicator status="success"&gt;&lt;/wire-status-indicator&gt;
+&lt;wire-status-indicator status="failed"&gt;&lt;/wire-status-indicator&gt;
+&lt;wire-status-indicator status="processing"&gt;&lt;/wire-status-indicator&gt;
+&lt;wire-status-indicator&gt;&lt;/wire-status-indicator&gt;</pre
+        >
+      </section>
+
+      <!-- Example UI Pattern: Record Item -->
+      <section class="component-section" id="example-record-item">
+        <h2 class="component-title">Example: Record Item</h2>
+        <p class="component-description">
+          An example of combining components to create a record item.
+        </p>
+        <div class="component-demo" style="width: 100%">
+          <wire-panel style="width: 100%">
+            <div slot="header">
+              <wire-row>
+                <wire-status-indicator status="success"></wire-status-indicator>
+                <div style="flex-grow: 1">
+                  Analysis figma and generate lynx code
+                </div>
+                <wire-expand-button></wire-expand-button>
+              </wire-row>
+            </div>
+            <wire-message
+              >I'm retrieving figma content with the URL</wire-message
+            >
+            <wire-row>
+              <wire-icon name="tool"></wire-icon>
+              <div style="flex-grow: 1">Retrieve figma</div>
+              <wire-status-indicator
+                status="processing"
+              ></wire-status-indicator>
+            </wire-row>
+          </wire-panel>
+        </div>
+        <pre class="code-example">
+&lt;wire-panel&gt;
+  &lt;div slot="header"&gt;
+    &lt;wire-row&gt;
+      &lt;wire-status-indicator status="success"&gt;&lt;/wire-status-indicator&gt;
+      &lt;div style="flex-grow: 1;"&gt;Analysis figma and generate lynx code&lt;/div&gt;
+      &lt;wire-expand-button&gt;&lt;/wire-expand-button&gt;
+    &lt;/wire-row&gt;
+  &lt;/div&gt;
+  &lt;wire-message&gt;I'm retrieving figma content with the URL&lt;/wire-message&gt;
+  &lt;wire-row&gt;
+    &lt;wire-icon name="tool"&gt;&lt;/wire-icon&gt;
+    &lt;div style="flex-grow: 1;"&gt;Retrieve figma&lt;/div&gt;
+    &lt;wire-status-indicator status="processing"&gt;&lt;/wire-status-indicator&gt;
+  &lt;/wire-row&gt;
+&lt;/wire-panel&gt;</pre
+        >
+      </section>
+
+      <!-- Accordion Component -->
+      <section class="component-section" id="accordion">
+        <h2 class="component-title">Accordion</h2>
+        <p class="component-description">
+          A vertically stacked set of interactive headings that reveal content.
+        </p>
+        <div class="component-demo" style="width: 100%">
+          <wire-accordion style="width: 100%">
+            <wire-accordion-item>
+              <div slot="header">Accordion Item 1</div>
+              <div slot="content">
+                This is the content for the first accordion item.
+              </div>
+            </wire-accordion-item>
+            <wire-accordion-item>
+              <div slot="header">Accordion Item 2</div>
+              <div slot="content">
+                This is the content for the second accordion item.
+              </div>
+            </wire-accordion-item>
+            <wire-accordion-item>
+              <div slot="header">Accordion Item 3</div>
+              <div slot="content">
+                This is the content for the third accordion item.
+              </div>
+            </wire-accordion-item>
+          </wire-accordion>
+        </div>
+        <pre class="code-example">
+&lt;wire-accordion&gt;
+  &lt;wire-accordion-item&gt;
+    &lt;div slot="header"&gt;Accordion Item 1&lt;/div&gt;
+    &lt;div slot="content"&gt;This is the content for the first accordion item.&lt;/div&gt;
+  &lt;/wire-accordion-item&gt;
+  &lt;wire-accordion-item&gt;
+    &lt;div slot="header"&gt;Accordion Item 2&lt;/div&gt;
+    &lt;div slot="content"&gt;This is the content for the second accordion item.&lt;/div&gt;
+  &lt;/wire-accordion-item&gt;
+  &lt;wire-accordion-item&gt;
+    &lt;div slot="header"&gt;Accordion Item 3&lt;/div&gt;
+    &lt;div slot="content"&gt;This is the content for the third accordion item.&lt;/div&gt;
+  &lt;/wire-accordion-item&gt;
+&lt;/wire-accordion&gt;</pre
+        >
+      </section>
+
+      <!-- Combobox Component -->
+      <section class="component-section" id="combobox">
+        <h2 class="component-title">Combobox</h2>
+        <p class="component-description">
+          An input with a dropdown list of options.
+        </p>
+        <div class="component-demo" style="width: 100%">
+          <wire-combobox style="width: 100%">
+            <wire-input
+              slot="input"
+              placeholder="Select an option..."
+            ></wire-input>
+            <wire-combobox-option>Option 1</wire-combobox-option>
+            <wire-combobox-option selected>Option 2</wire-combobox-option>
+            <wire-combobox-option>Option 3</wire-combobox-option>
+          </wire-combobox>
+        </div>
+        <pre class="code-example">
+&lt;wire-combobox&gt;
+  &lt;wire-input slot="input" placeholder="Select an option..."&gt;&lt;/wire-input&gt;
+  &lt;wire-combobox-option&gt;Option 1&lt;/wire-combobox-option&gt;
+  &lt;wire-combobox-option selected&gt;Option 2&lt;/wire-combobox-option&gt;
+  &lt;wire-combobox-option&gt;Option 3&lt;/wire-combobox-option&gt;
+&lt;/wire-combobox&gt;</pre>
+        >
+      </section>
+
+      <!-- Tabs Component -->
+      <section class="component-section" id="tabs">
+        <h2 class="component-title">Tabs</h2>
+        <p class="component-description">
+          A set of layered sections of content.
+        </p>
+        <div class="component-demo" style="width: 100%">
+          <wire-tabs style="width: 100%">
+            <div slot="tab-list">
+              <wire-tab active>Tab 1</wire-tab>
+              <wire-tab>Tab 2</wire-tab>
+              <wire-tab>Tab 3</wire-tab>
+            </div>
+            <div slot="content">
+              <wire-tab-panel>Content for Tab 1</wire-tab-panel>
+            </div>
+          </wire-tabs>
+        </div>
+        <pre class="code-example">
+&lt;wire-tabs&gt;
+  &lt;div slot="tab-list"&gt;
+    &lt;wire-tab active&gt;Tab 1&lt;/wire-tab&gt;
+    &lt;wire-tab&gt;Tab 2&lt;/wire-tab&gt;
+    &lt;wire-tab&gt;Tab 3&lt;/wire-tab&gt;
+  &lt;/div&gt;
+  &lt;div slot="content"&gt;
+    &lt;wire-tab-panel&gt;Content for Tab 1&lt;/wire-tab-panel&gt;
+  &lt;/div&gt;
+&lt;/wire-tabs&gt;</pre
+        >
+      </section>
+
+      <!-- Checkbox Component -->
+      <section class="component-section" id="checkbox">
+        <h2 class="component-title">Checkbox</h2>
+        <p class="component-description">
+          A control that allows selecting multiple options.
+        </p>
+        <div class="component-demo">
+          <wire-checkbox>Unchecked option</wire-checkbox>
+          <wire-checkbox checked>Checked option</wire-checkbox>
+        </div>
+        <pre class="code-example">
+&lt;wire-checkbox&gt;Unchecked option&lt;/wire-checkbox&gt;
+&lt;wire-checkbox checked&gt;Checked option&lt;/wire-checkbox&gt;</pre
+        >
+      </section>
+
+      <!-- Radio Group Component -->
+      <section class="component-section" id="radio-group">
+        <h2 class="component-title">Radio Group</h2>
+        <p class="component-description">
+          A group of radio buttons where only one can be selected.
+        </p>
+        <div class="component-demo" style="width: 100%">
+          <wire-radio-group>
+            <wire-radio-item>Option 1</wire-radio-item>
+            <wire-radio-item checked>Option 2</wire-radio-item>
+            <wire-radio-item>Option 3</wire-radio-item>
+          </wire-radio-group>
+        </div>
+        <pre class="code-example">
+&lt;wire-radio-group&gt;
+  &lt;wire-radio-item&gt;Option 1&lt;/wire-radio-item&gt;
+  &lt;wire-radio-item checked&gt;Option 2&lt;/wire-radio-item&gt;
+  &lt;wire-radio-item&gt;Option 3&lt;/wire-radio-item&gt;
+&lt;/wire-radio-group&gt;</pre
+        >
+      </section>
+
+      <!-- Select Component -->
+      <section class="component-section" id="select">
+        <h2 class="component-title">Select</h2>
+        <p class="component-description">A dropdown list of options.</p>
+        <div class="component-demo" style="width: 100%">
+          <wire-select style="width: 100%">
+            <div slot="value">Selected Option</div>
+            <wire-select-option>Option 1</wire-select-option>
+            <wire-select-option selected>Selected Option</wire-select-option>
+            <wire-select-option>Option 3</wire-select-option>
+          </wire-select>
+        </div>
+        <pre class="code-example">
+&lt;wire-select&gt;
+  &lt;div slot="value"&gt;Selected Option&lt;/div&gt;
+  &lt;wire-select-option&gt;Option 1&lt;/wire-select-option&gt;
+  &lt;wire-select-option selected&gt;Selected Option&lt;/wire-select-option&gt;
+  &lt;wire-select-option&gt;Option 3&lt;/wire-select-option&gt;
+&lt;/wire-select&gt;</pre
+        >
+      </section>
+
+      <!-- Toggle Component -->
+      <section class="component-section" id="toggle">
+        <h2 class="component-title">Toggle</h2>
+        <p class="component-description">
+          A switch that toggles between on and off states.
+        </p>
+        <div class="component-demo">
+          <wire-toggle></wire-toggle>
+          <wire-toggle checked></wire-toggle>
+        </div>
+        <pre class="code-example">
+&lt;wire-toggle&gt;&lt;/wire-toggle&gt;
+&lt;wire-toggle checked&gt;&lt;/wire-toggle&gt;</pre
+        >
+      </section>
+
+      <!-- Slider Component -->
+      <section class="component-section" id="slider">
+        <h2 class="component-title">Slider</h2>
+        <p class="component-description">
+          A control for selecting a value from a range.
+        </p>
+        <div class="component-demo" style="width: 100%">
+          <wire-slider
+            min="0"
+            max="100"
+            value="30"
+            style="width: 100%"
+          ></wire-slider>
+          <wire-slider
+            min="0"
+            max="100"
+            value="70"
+            style="width: 100%"
+          ></wire-slider>
+        </div>
+        <pre class="code-example">
+&lt;wire-slider min="0" max="100" value="30"&gt;&lt;/wire-slider&gt;
+&lt;wire-slider min="0" max="100" value="70"&gt;&lt;/wire-slider&gt;</pre
+        >
+      </section>
+    </main>
+
+    <footer class="mt-12 pt-6 border-t border-gray-200 text-sm text-gray-500">
+      <p>Wireframe UI - A minimalist wireframe UI component library.</p>
+    </footer>
+  </body>
+</html>

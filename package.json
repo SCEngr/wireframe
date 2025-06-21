@@ -1,0 +1,34 @@
+{
+  "name": "wireframe",
+  "version": "0.1.0",
+  "description": "A minimalist web component library with wireframe-style UI components",
+  "type": "module",
+  "main": "dist/wireframe.js",
+  "module": "dist/wireframe.esm.js",
+  "types": "dist/types/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "dev": "bun run --watch src/index.ts",
+    "build": "bun build src/index.ts --outdir=dist --format=esm",
+    "build:types": "tsc --emitDeclarationOnly --outDir dist/types",
+    "serve": "npx serve .",
+    "playground": "bun run build && bun run serve"
+  },
+  "keywords": [
+    "web-components",
+    "ui-library",
+    "wireframe",
+    "tailwindcss",
+    "lucide-icons"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "latest",
+    "bun": "latest",
+    "typescript": "latest"
+  },
+  "dependencies": {}
+}
