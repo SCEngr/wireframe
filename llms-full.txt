@@ -1,0 +1,199 @@
+# WireframeUI Component Library
+
+## Overview
+WireframeUI is a minimalist web component library that provides wireframe-style UI components for prototype design and interface demonstrations. 
+
+### Basic Components
+
+#### Button (wire-button)
+A simple button component with wireframe styling.
+- **Usage**: `<wire-button>Click me</wire-button>`
+- **Attributes**: None
+
+#### Input (wire-input)
+A text input field with wireframe styling.
+- **Usage**: `<wire-input></wire-input>`
+- **Attributes**: None
+
+#### Card (wire-card)
+A container component with header, body, and footer sections.
+- **Usage**: 
+  ```html
+  <wire-card>
+    <div slot="header">Card Header</div>
+    <div slot="body">Card Content</div>
+    <div slot="footer">Card Footer</div>
+  </wire-card>
+  ```
+- **Slots**: header, body, footer
+
+#### Badge (wire-badge)
+A small badge component for displaying status or counts.
+- **Usage**: `<wire-badge>New</wire-badge>`
+- **Attributes**: None
+
+#### Avatar (wire-avatar)
+A component for displaying user avatars.
+- **Usage**: `<wire-avatar>JD</wire-avatar>` or `<wire-avatar><img src="avatar.jpg" alt="User"></wire-avatar>`
+- **Attributes**: shape (circle, square)
+
+#### Alert (wire-alert)
+A component for displaying alert messages.
+- **Usage**: `<wire-alert>This is an alert message</wire-alert>`
+- **Attributes**: None
+
+### Layout Components
+
+#### Panel (wire-panel)
+A container component for grouping related content.
+- **Usage**: `<wire-panel>Content</wire-panel>`
+- **Attributes**: None
+
+#### Row (wire-row)
+A horizontal layout component.
+- **Usage**: `<wire-row>Content</wire-row>`
+- **Attributes**: None
+
+#### Column (wire-column)
+A vertical layout component.
+- **Usage**: `<wire-column>Content</wire-column>`
+- **Attributes**: None
+
+#### Section (wire-section)
+A component for defining page sections.
+- **Usage**: `<wire-section>Content</wire-section>`
+- **Attributes**: None
+
+### Interactive Components
+
+#### Toggle (wire-toggle)
+A switch component representing an on/off state.
+- **Usage**: `<wire-toggle></wire-toggle>` or `<wire-toggle checked></wire-toggle>`
+- **Attributes**: checked
+
+#### Select (wire-select)
+A dropdown select component.
+- **Usage**: 
+  ```html
+  <wire-select>
+    <div slot="value">Selected Option</div>
+    <wire-select-option>Option 1</wire-select-option>
+    <wire-select-option selected>Option 2</wire-select-option>
+    <wire-select-option>Option 3</wire-select-option>
+  </wire-select>
+  ```
+- **Attributes**: None
+- **Related Components**: wire-select-option
+
+#### Combobox (wire-combobox)
+A combination of input field and dropdown list.
+- **Usage**: `<wire-combobox></wire-combobox>`
+- **Attributes**: None
+
+#### Accordion (wire-accordion)
+A collapsible content panel.
+- **Usage**: `<wire-accordion>Content</wire-accordion>`
+- **Attributes**: None
+
+#### Tabs (wire-tabs)
+A tabbed interface for organizing content.
+- **Usage**: 
+  ```html
+  <wire-tabs>
+    <wire-tab>Tab 1</wire-tab>
+    <wire-tab>Tab 2</wire-tab>
+    <wire-tab-panel>Content 1</wire-tab-panel>
+    <wire-tab-panel>Content 2</wire-tab-panel>
+  </wire-tabs>
+  ```
+- **Related Components**: wire-tab, wire-tab-panel
+
+#### Checkbox (wire-checkbox)
+A checkbox input component.
+- **Usage**: `<wire-checkbox></wire-checkbox>` or `<wire-checkbox checked></wire-checkbox>`
+- **Attributes**: checked
+
+#### Radio Group (wire-radio-group)
+A group of radio button options.
+- **Usage**: 
+  ```html
+  <wire-radio-group>
+    <wire-radio value="option1">Option 1</wire-radio>
+    <wire-radio value="option2" checked>Option 2</wire-radio>
+    <wire-radio value="option3">Option 3</wire-radio>
+  </wire-radio-group>
+  ```
+- **Related Components**: wire-radio
+
+#### Slider (wire-slider)
+A slider component for selecting a value from a range.
+- **Usage**: `<wire-slider></wire-slider>` or `<wire-slider value="50"></wire-slider>`
+- **Attributes**: value
+
+### Utility Components
+
+#### Icon (wire-icon)
+A component for displaying Lucide icons.
+- **Usage**: `<wire-icon name="check"></wire-icon>` or `<wire-icon name="alert-triangle" size="24"></wire-icon>`
+- **Attributes**: name (Lucide 图标名称), size (图标大小，默认为 24)
+
+
+
+#### Message (wire-message)
+A component for displaying system messages.
+- **Usage**: `<wire-message>This is a message</wire-message>`
+- **Attributes**: None
+
+#### Heading (wire-heading)
+A component for displaying headings with consistent styling.
+- **Usage**: `<wire-heading level="1">Heading</wire-heading>`
+- **Attributes**: level (1-6)
+
+#### Status Indicator (wire-status-indicator)
+A component for displaying status information.
+- **Usage**: `<wire-status-indicator status="online"></wire-status-indicator>`
+- **Attributes**: status (online, offline, away, busy)
+
+## Styling
+
+### Common Wireframe Styles
+All components share these common wireframe styling characteristics:
+- Solid borders (1px solid #9ca3af)
+- Neutral gray color (#6b7280)
+- Transparent backgrounds
+- Disabled user selection
+- Simple, clean layout with appropriate padding and spacing
+- No hover effects or complex interaction states
+
+### CSS Variables
+The library does not currently use CSS variables for theming, maintaining a consistent wireframe appearance across all components.
+
+## Usage
+
+### Installation
+```bash
+npm install wireframeui
+```
+
+or
+
+```bash
+yarn add wireframeui
+```
+
+### Basic Usage
+```html
+<!-- Import the library -->
+<script type="module" src="path/to/wireframe.js"></script>
+
+<!-- Use the components -->
+<wire-button>Click me</wire-button>
+<wire-input></wire-input>
+<wire-card>
+  <div slot="header">Card Title</div>
+  <div slot="body">Card Content</div>
+</wire-card>
+```
+
+## Browser Support
+WireframeUI supports all modern browsers that implement the Web Components standard.

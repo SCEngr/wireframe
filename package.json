@@ -1,20 +1,29 @@
 {
-  "name": "wireframe",
-  "version": "0.1.0",
+  "name": "@bracken/wireframe",
+  "version": "0.1.1",
   "description": "A minimalist web component library with wireframe-style UI components",
   "type": "module",
-  "main": "dist/wireframe.js",
-  "module": "dist/wireframe.esm.js",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
   "types": "dist/types/index.d.ts",
   "files": [
-    "dist"
+    "dist",
+    "README.md",
+    "LICENSE"
   ],
   "scripts": {
     "dev": "bun run --watch src/index.ts",
-    "build": "bun build src/index.ts --outdir=dist --format=esm",
+    "build": "bun build src/index.ts --outdir=dist",
+    "build:esm": "bun build src/index.ts --outdir=dist --format=esm && mv dist/index.js dist/index.mjs",
+    "build:min": "bun build src/index.ts --outdir=dist --format=esm --minify && mv dist/index.js dist/index.min.mjs",
     "build:types": "tsc --emitDeclarationOnly --outDir dist/types",
+    "build:all": "bun run build && bun run build:esm && bun run build:min && bun run build:types",
+    "build:playground": "bun build playground/index.mjs --outdir=playground/dist",
+    "build:complete": "bun run build:all && bun run build:playground",
     "serve": "npx serve .",
-    "playground": "bun run build && bun run serve"
+    "playground": "bunx serve playground",
+    "prepublishOnly": "bun run build:all",
+    "publish": "npm publish --access=public"
   },
   "keywords": [
     "web-components",
@@ -30,5 +39,7 @@
     "bun": "latest",
     "typescript": "latest"
   },
-  "dependencies": {}
+  "dependencies": {
+    "lucide": "^0.522.0"
+  }
 }

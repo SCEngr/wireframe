@@ -39,7 +39,7 @@ export class WireHeading extends BaseComponent {
       '6': '12px'
     };
     
-    heading.style.fontSize = fontSizes[headingLevel];
+    heading.style.fontSize = fontSizes[headingLevel as keyof typeof fontSizes] || fontSizes['4']; // 默认为 h4 大小
     
     // Create slot for content
     const slotElement = document.createElement('slot');
