@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WireframeUI - Bento Layout</title>
+    <script type="module" src="../dist/index.mjs"></script>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+        line-height: 1.6;
+        color: #333;
+        padding: 1rem;
+        background-color: #f5f5f5;
+      }
+
+      header {
+        margin-bottom: 2rem;
+        text-align: center;
+      }
+
+      h1 {
+        font-size: 2.5rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .subtitle {
+        font-size: 1.2rem;
+        color: #666;
+        margin-bottom: 2rem;
+      }
+
+      .bento-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 1rem;
+        margin-bottom: 1rem;
+      }
+
+      .bento-item {
+        background-color: white;
+        border-radius: 0.5rem;
+        padding: 1rem;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        display: flex;
+        flex-direction: column;
+      }
+
+      .bento-item h3 {
+        margin-bottom: 0.5rem;
+        padding-bottom: 0.25rem;
+        border-bottom: 1px solid #eee;
+      }
+
+      .component-demo {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 0.5rem;
+        min-height: 120px;
+      }
+
+      footer {
+        text-align: center;
+        margin-top: 2rem;
+        padding-top: 1rem;
+        border-top: 1px solid #eee;
+        color: #666;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>WireframeUI</h1>
+      <div class="subtitle">
+        A minimalist web component library with wireframe-style UI components
+      </div>
+    </header>
+
+    <div class="bento-grid">
+      <!-- Button -->
+      <div class="bento-item">
+        <h3>Button</h3>
+        <div class="component-demo">
+          <wire-button>Click me</wire-button>
+          <wire-button variant="secondary">Secondary</wire-button>
+          <wire-button disabled>Disabled</wire-button>
+          <wire-button loading>Loading</wire-button>
+          <wire-button size="small">Small</wire-button>
+          <wire-button size="large">Large</wire-button>
+        </div>
+      </div>
+
+      <!-- Input -->
+      <div class="bento-item">
+        <h3>Input</h3>
+        <div class="component-demo">
+          <wire-input placeholder="Enter text..."></wire-input>
+          <wire-input value="Filled" placeholder="Filled input"></wire-input>
+          <wire-input disabled value="Disabled"></wire-input>
+          <wire-input
+            error
+            value="Error"
+            placeholder="Error state"
+          ></wire-input>
+        </div>
+      </div>
+
+      <!-- Toggle -->
+      <div class="bento-item">
+        <h3>Toggle</h3>
+        <div class="component-demo">
+          <wire-toggle></wire-toggle>
+          <wire-toggle checked></wire-toggle>
+        </div>
+      </div>
+
+      <!-- Checkbox -->
+      <div class="bento-item">
+        <h3>Checkbox</h3>
+        <div class="component-demo">
+          <wire-checkbox>Unchecked option</wire-checkbox>
+          <wire-checkbox checked>Checked option</wire-checkbox>
+        </div>
+      </div>
+
+      <!-- Radio Group -->
+      <div class="bento-item">
+        <h3>Radio Group</h3>
+        <div class="component-demo">
+          <wire-radio-group>
+            <wire-radio-item>Option 1</wire-radio-item>
+            <wire-radio-item checked>Option 2</wire-radio-item>
+            <wire-radio-item>Option 3</wire-radio-item>
+          </wire-radio-group>
+        </div>
+      </div>
+
+      <!-- Select -->
+      <div class="bento-item">
+        <h3>Select</h3>
+        <div class="component-demo">
+          <wire-select style="width: 100%">
+            <div slot="value">Selected Option</div>
+            <wire-select-option>Option 1</wire-select-option>
+            <wire-select-option selected>Selected Option</wire-select-option>
+            <wire-select-option>Option 3</wire-select-option>
+          </wire-select>
+        </div>
+      </div>
+
+      <!-- Card -->
+      <div class="bento-item">
+        <h3>Card</h3>
+        <div class="component-demo" style="width: 100%">
+          <wire-card style="width: 100%">
+            <div slot="header">Card Title</div>
+            <div slot="body">Card content goes here...</div>
+            <div slot="footer">Card Footer</div>
+          </wire-card>
+        </div>
+      </div>
+
+      <!-- Heading -->
+      <div class="bento-item">
+        <h3>Heading</h3>
+        <div class="component-demo" style="width: 100%">
+          <wire-heading level="1">Heading Level 1</wire-heading>
+          <wire-heading level="2">Heading Level 2</wire-heading>
+          <wire-heading level="3">Heading Level 3</wire-heading>
+          <wire-heading level="4">Heading Level 4</wire-heading>
+        </div>
+      </div>
+
+      <!-- Badge -->
+      <div class="bento-item">
+        <h3>Badge</h3>
+        <div class="component-demo">
+          <wire-badge>New</wire-badge>
+          <wire-badge variant="primary">Primary</wire-badge>
+          <wire-badge variant="secondary">Secondary</wire-badge>
+          <wire-badge variant="success">Success</wire-badge>
+          <wire-badge variant="warning">Warning</wire-badge>
+          <wire-badge variant="danger">Danger</wire-badge>
+        </div>
+      </div>
+
+      <!-- Avatar -->
+      <div class="bento-item">
+        <h3>Avatar</h3>
+        <div class="component-demo">
+          <wire-avatar>JD</wire-avatar>
+          <wire-avatar src="https://via.placeholder.com/150"></wire-avatar>
+        </div>
+      </div>
+
+      <!-- Alert -->
+      <div class="bento-item">
+        <h3>Alert</h3>
+        <div class="component-demo" style="width: 100%">
+          <wire-alert>This is an alert message.</wire-alert>
+          <wire-alert variant="success">Success alert!</wire-alert>
+          <wire-alert variant="warning">Warning alert!</wire-alert>
+          <wire-alert variant="danger">Danger alert!</wire-alert>
+        </div>
+      </div>
+
+      <!-- Accordion -->
+      <div class="bento-item">
+        <h3>Accordion</h3>
+        <div class="component-demo" style="width: 100%">
+          <wire-accordion style="width: 100%">
+            <wire-accordion-item>
+              <div slot="header">Accordion Item 1</div>
+              <div slot="content">
+                This is the content for the first accordion item.
+              </div>
+            </wire-accordion-item>
+            <wire-accordion-item>
+              <div slot="header">Accordion Item 2</div>
+              <div slot="content">
+                This is the content for the second accordion item.
+              </div>
+            </wire-accordion-item>
+            <wire-accordion-item>
+              <div slot="header">Accordion Item 3</div>
+              <div slot="content">
+                This is the content for the third accordion item.
+              </div>
+            </wire-accordion-item>
+          </wire-accordion>
+        </div>
+      </div>
+
+      <!-- Tabs -->
+      <div class="bento-item">
+        <h3>Tabs</h3>
+        <div class="component-demo" style="width: 100%">
+          <wire-tabs style="width: 100%">
+            <div slot="tab-list">
+              <wire-tab active>Tab 1</wire-tab>
+              <wire-tab>Tab 2</wire-tab>
+              <wire-tab>Tab 3</wire-tab>
+            </div>
+            <div slot="content">
+              <wire-tab-panel>Content for Tab 1</wire-tab-panel>
+            </div>
+          </wire-tabs>
+        </div>
+      </div>
+
+      <!-- Dialog -->
+      <div class="bento-item">
+        <h3>Dialog</h3>
+        <div class="component-demo" style="width: 100%">
+          <wire-dialog>
+            <div slot="header">Dialog Title</div>
+            <div slot="content">
+              This is the dialog content area. You can place any content here.
+            </div>
+            <div slot="footer">
+              <wire-button>Cancel</wire-button>
+              <wire-button>Confirm</wire-button>
+            </div>
+          </wire-dialog>
+        </div>
+      </div>
+
+      <!-- Dropdown -->
+      <div class="bento-item">
+        <h3>Dropdown</h3>
+        <div class="component-demo">
+          <wire-dropdown>
+            <div slot="trigger">Click me</div>
+            <div slot="content">
+              <div
+                class="wire-dropdown-item wireframe-element"
+                style="padding: 8px 12px; margin-bottom: 2px"
+              >
+                Item 1
+              </div>
+              <div
+                class="wire-dropdown-item wireframe-element"
+                style="padding: 8px 12px; margin-bottom: 2px"
+              >
+                Item 2
+              </div>
+              <div
+                class="wire-dropdown-item wireframe-element"
+                style="padding: 8px 12px"
+              >
+                Item 3
+              </div>
+            </div>
+          </wire-dropdown>
+          <wire-dropdown open>
+            <div slot="trigger">Open Dropdown</div>
+            <div slot="content">
+              <div
+                class="wire-dropdown-item wireframe-element"
+                style="padding: 8px 12px; margin-bottom: 2px"
+              >
+                Item 1
+              </div>
+              <div
+                class="wire-dropdown-item wireframe-element"
+                style="padding: 8px 12px; margin-bottom: 2px"
+              >
+                Item 2
+              </div>
+              <div
+                class="wire-dropdown-item wireframe-element"
+                style="padding: 8px 12px"
+              >
+                Item 3
+              </div>
+            </div>
+          </wire-dropdown>
+        </div>
+      </div>
+
+      <!-- Tooltip -->
+      <div class="bento-item">
+        <h3>Tooltip</h3>
+        <div class="component-demo">
+          <wire-tooltip>
+            <div slot="trigger">Hover me</div>
+            <div slot="content">This is a tooltip</div>
+          </wire-tooltip>
+          <wire-tooltip position="bottom" visible>
+            <div slot="trigger">Bottom tooltip</div>
+            <div slot="content">This tooltip is shown below</div>
+          </wire-tooltip>
+        </div>
+      </div>
+
+      <!-- Progress -->
+      <div class="bento-item">
+        <h3>Progress</h3>
+        <div class="component-demo" style="width: 100%">
+          <wire-progress
+            value="30"
+            max="100"
+            style="width: 100%"
+          ></wire-progress>
+          <div style="height: 10px"></div>
+          <wire-progress
+            value="70"
+            max="100"
+            style="width: 100%"
+          ></wire-progress>
+          <div style="height: 10px"></div>
+          <wire-progress
+            value="100"
+            max="100"
+            style="width: 100%"
+          ></wire-progress>
+        </div>
+      </div>
+
+      <!-- Slider -->
+      <div class="bento-item">
+        <h3>Slider</h3>
+        <div class="component-demo" style="width: 100%">
+          <wire-slider
+            min="0"
+            max="100"
+            value="30"
+            style="width: 100%"
+          ></wire-slider>
+          <wire-slider
+            min="0"
+            max="100"
+            value="70"
+            style="width: 100%"
+          ></wire-slider>
+        </div>
+      </div>
+
+      <!-- Status Indicator -->
+      <div class="bento-item">
+        <h3>Status Indicator</h3>
+        <div class="component-demo">
+          <wire-status-indicator status="success"></wire-status-indicator>
+          <wire-status-indicator status="failed"></wire-status-indicator>
+          <wire-status-indicator status="processing"></wire-status-indicator>
+          <wire-status-indicator></wire-status-indicator>
+        </div>
+      </div>
+
+      <!-- Icon -->
+      <div class="bento-item">
+        <h3>Icon</h3>
+        <div class="component-demo">
+          <wire-icon name="check"></wire-icon>
+          <wire-icon name="x"></wire-icon>
+          <wire-icon name="loader"></wire-icon>
+          <wire-icon name="chevron-down"></wire-icon>
+          <wire-icon name="chevron-right"></wire-icon>
+          <wire-icon name="tool"></wire-icon>
+        </div>
+      </div>
+
+      <!-- Message -->
+      <div class="bento-item">
+        <h3>Message</h3>
+        <div class="component-demo" style="width: 100%">
+          <wire-message>This is a sample message.</wire-message>
+          <wire-message
+            >Another message with more content to show how it
+            wraps.</wire-message
+          >
+        </div>
+      </div>
+
+      <!-- Combobox -->
+      <div class="bento-item">
+        <h3>Combobox</h3>
+        <div class="component-demo" style="width: 100%">
+          <wire-combobox style="width: 100%">
+            <wire-input
+              slot="input"
+              placeholder="Select an option..."
+            ></wire-input>
+            <wire-combobox-option>Option 1</wire-combobox-option>
+            <wire-combobox-option selected>Option 2</wire-combobox-option>
+            <wire-combobox-option>Option 3</wire-combobox-option>
+          </wire-combobox>
+        </div>
+      </div>
+
+      <!-- Section -->
+      <div class="bento-item">
+        <h3>Section</h3>
+        <div class="component-demo" style="width: 100%">
+          <wire-section style="width: 100%">
+            <div slot="header">Section Title</div>
+            <div slot="content">Section content goes here...</div>
+          </wire-section>
+        </div>
+      </div>
+
+      <!-- Panel -->
+      <div class="bento-item">
+        <h3>Panel</h3>
+        <div class="component-demo" style="width: 100%">
+          <wire-panel style="width: 100%">
+            <div slot="header">Panel Header</div>
+            <div slot="content">Panel content goes here...</div>
+          </wire-panel>
+        </div>
+      </div>
+
+      <!-- Row -->
+      <div class="bento-item">
+        <h3>Row</h3>
+        <div class="component-demo" style="width: 100%">
+          <wire-row style="width: 100%">
+            <div>Item 1</div>
+            <div>Item 2</div>
+            <div>Item 3</div>
+          </wire-row>
+        </div>
+      </div>
+
+      <!-- Column -->
+      <div class="bento-item">
+        <h3>Column</h3>
+        <div class="component-demo" style="width: 100%">
+          <wire-column style="width: 100%">
+            <div>Item 1</div>
+            <div>Item 2</div>
+            <div>Item 3</div>
+          </wire-column>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <p>WireframeUI - A minimalist web component library</p>
+    </footer>
+  </body>
+</html>

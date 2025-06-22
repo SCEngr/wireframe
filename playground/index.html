@@ -4,8 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Wireframe UI</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="../dist/index.js" type="module"></script>
+    <script src="../dist/index.mjs" type="module"></script>
     <style>
       body {
         font-family: system-ui, -apple-system, sans-serif;
@@ -351,7 +350,7 @@
           <wire-icon name="loader"></wire-icon>
           <wire-icon name="chevron-down"></wire-icon>
           <wire-icon name="chevron-right"></wire-icon>
-          <wire-icon name="tool"></wire-icon>
+          <wire-icon name="brick-wall"></wire-icon>
         </div>
         <pre class="code-example">
 &lt;wire-icon name="check"&gt;&lt;/wire-icon&gt;
@@ -380,22 +379,6 @@
   &lt;div slot="header"&gt;Section Header&lt;/div&gt;
   &lt;div&gt;Section content goes here. This can contain any content.&lt;/div&gt;
 &lt;/wire-section&gt;</pre
-        >
-      </section>
-
-      <!-- ExpandButton Component -->
-      <section class="component-section" id="expand-button">
-        <h2 class="component-title">ExpandButton</h2>
-        <p class="component-description">
-          A button for expanding/collapsing content.
-        </p>
-        <div class="component-demo">
-          <wire-expand-button></wire-expand-button>
-          <wire-expand-button expanded></wire-expand-button>
-        </div>
-        <pre class="code-example">
-&lt;wire-expand-button&gt;&lt;/wire-expand-button&gt;
-&lt;wire-expand-button expanded&gt;&lt;/wire-expand-button&gt;</pre
         >
       </section>
 
@@ -460,15 +443,14 @@
         </p>
         <div class="component-demo" style="width: 100%">
           <wire-panel style="width: 100%">
-            <div slot="header">
+            <wire-column slot="header">
               <wire-row>
                 <wire-status-indicator status="success"></wire-status-indicator>
                 <div style="flex-grow: 1">
                   Analysis figma and generate lynx code
                 </div>
-                <wire-expand-button></wire-expand-button>
               </wire-row>
-            </div>
+            </wire-column>
             <wire-message
               >I'm retrieving figma content with the URL</wire-message
             >
@@ -569,7 +551,8 @@
   &lt;wire-combobox-option&gt;Option 1&lt;/wire-combobox-option&gt;
   &lt;wire-combobox-option selected&gt;Option 2&lt;/wire-combobox-option&gt;
   &lt;wire-combobox-option&gt;Option 3&lt;/wire-combobox-option&gt;
-&lt;/wire-combobox&gt;</pre>
+&lt;/wire-combobox&gt;</pre
+        >
         >
       </section>
 
@@ -704,6 +687,163 @@
         <pre class="code-example">
 &lt;wire-slider min="0" max="100" value="30"&gt;&lt;/wire-slider&gt;
 &lt;wire-slider min="0" max="100" value="70"&gt;&lt;/wire-slider&gt;</pre
+        >
+      </section>
+
+      <!-- Dialog Component -->
+      <section class="component-section" id="dialog">
+        <h2 class="component-title">Dialog</h2>
+        <p class="component-description">
+          A modal dialog for displaying important content or actions.
+        </p>
+        <div class="component-demo" style="width: 100%">
+          <wire-dialog>
+            <div slot="header">Dialog Title</div>
+            <div slot="content">
+              This is the dialog content area. You can place any content here.
+            </div>
+            <div slot="footer">
+              <wire-button>Cancel</wire-button>
+              <wire-button>Confirm</wire-button>
+            </div>
+          </wire-dialog>
+        </div>
+        <pre class="code-example">
+&lt;wire-dialog&gt;
+  &lt;div slot="header"&gt;Dialog Title&lt;/div&gt;
+  &lt;div slot="content"&gt;This is the dialog content area. You can place any content here.&lt;/div&gt;
+  &lt;div slot="footer"&gt;
+    &lt;wire-button&gt;Cancel&lt;/wire-button&gt;
+    &lt;wire-button&gt;Confirm&lt;/wire-button&gt;
+  &lt;/div&gt;
+&lt;/wire-dialog&gt;</pre
+        >
+      </section>
+
+      <!-- Dropdown Component -->
+      <section class="component-section" id="dropdown">
+        <h2 class="component-title">Dropdown</h2>
+        <p class="component-description">
+          A dropdown menu that displays a list of options.
+        </p>
+        <div class="component-demo">
+          <wire-dropdown>
+            <div slot="trigger">Click me</div>
+            <div slot="content">
+              <div
+                class="wire-dropdown-item wireframe-element"
+                style="padding: 8px 12px; margin-bottom: 2px"
+              >
+                Item 1
+              </div>
+              <div
+                class="wire-dropdown-item wireframe-element"
+                style="padding: 8px 12px; margin-bottom: 2px"
+              >
+                Item 2
+              </div>
+              <div
+                class="wire-dropdown-item wireframe-element"
+                style="padding: 8px 12px"
+              >
+                Item 3
+              </div>
+            </div>
+          </wire-dropdown>
+          <wire-dropdown open>
+            <div slot="trigger">Open Dropdown</div>
+            <div slot="content">
+              <div
+                class="wire-dropdown-item wireframe-element"
+                style="padding: 8px 12px; margin-bottom: 2px"
+              >
+                Item 1
+              </div>
+              <div
+                class="wire-dropdown-item wireframe-element"
+                style="padding: 8px 12px; margin-bottom: 2px"
+              >
+                Item 2
+              </div>
+              <div
+                class="wire-dropdown-item wireframe-element"
+                style="padding: 8px 12px"
+              >
+                Item 3
+              </div>
+            </div>
+          </wire-dropdown>
+        </div>
+        <pre class="code-example">
+&lt;wire-dropdown&gt;
+  &lt;div slot="trigger"&gt;Click me&lt;/div&gt;
+  &lt;div slot="content"&gt;
+    &lt;div class="wire-dropdown-item wireframe-element"&gt;Item 1&lt;/div&gt;
+    &lt;div class="wire-dropdown-item wireframe-element"&gt;Item 2&lt;/div&gt;
+    &lt;div class="wire-dropdown-item wireframe-element"&gt;Item 3&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/wire-dropdown&gt;</pre
+        >
+      </section>
+
+      <!-- Tooltip Component -->
+      <section class="component-section" id="tooltip">
+        <h2 class="component-title">Tooltip</h2>
+        <p class="component-description">
+          A small popup that displays information when hovering over an element.
+        </p>
+        <div class="component-demo">
+          <wire-tooltip>
+            <div slot="trigger">Hover me</div>
+            <div slot="content">This is a tooltip</div>
+          </wire-tooltip>
+          <wire-tooltip position="bottom" visible>
+            <div slot="trigger">Bottom tooltip</div>
+            <div slot="content">This tooltip is shown below</div>
+          </wire-tooltip>
+        </div>
+        <pre class="code-example">
+&lt;wire-tooltip&gt;
+  &lt;div slot="trigger"&gt;Hover me&lt;/div&gt;
+  &lt;div slot="content"&gt;This is a tooltip&lt;/div&gt;
+&lt;/wire-tooltip&gt;
+
+&lt;wire-tooltip position="bottom"&gt;
+  &lt;div slot="trigger"&gt;Bottom tooltip&lt;/div&gt;
+  &lt;div slot="content"&gt;This tooltip is shown below&lt;/div&gt;
+&lt;/wire-tooltip&gt;</pre
+        >
+      </section>
+
+      <!-- Progress Component -->
+      <section class="component-section" id="progress">
+        <h2 class="component-title">Progress</h2>
+        <p class="component-description">
+          A linear indicator for displaying progress.
+        </p>
+        <div class="component-demo" style="width: 100%">
+          <wire-progress
+            value="30"
+            max="100"
+            style="width: 100%"
+          ></wire-progress>
+          <div style="height: 10px"></div>
+          <wire-progress
+            value="70"
+            max="100"
+            style="width: 100%"
+          ></wire-progress>
+          <div style="height: 10px"></div>
+          <wire-progress
+            value="100"
+            max="100"
+            style="width: 100%"
+          ></wire-progress>
+        </div>
+        <pre class="code-example">
+&lt;wire-progress value="30" max="100"&gt;&lt;/wire-progress&gt;
+&lt;wire-progress value="70" max="100"&gt;&lt;/wire-progress&gt;
+&lt;wire-progress value="100" max="100"&gt;&lt;/wire-progress&gt;</pre
         >
       </section>
     </main>
