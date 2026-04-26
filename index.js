@@ -19,102 +19,66 @@ class BaseComponent extends HTMLElement {
   injectStyles() {
     const styleSheet = document.createElement("style");
     styleSheet.textContent = `
-      :host { display: inline-block; }
+      :host { display: inline-block; font-family: var(--wire-font-family, system-ui); }
       * { box-sizing: border-box; }
-      
-      /* 通用线框样式 */
+
       .wireframe-element {
-        border: 1px solid #9ca3af;
-        border-radius: 0.25rem;
-        color: #6b7280;
-        background-color: transparent;
+        border: var(--wire-border-width, 1px) solid var(--wire-border-color, #9ca3af);
+        border-radius: var(--wire-border-radius, 0.25rem);
+        color: var(--wire-text-color, #6b7280);
+        background-color: var(--wire-bg-color, transparent);
         user-select: none;
+        box-shadow: var(--wire-shadow, none);
       }
-      
-      /* Button styles - wireframe */
-      .btn { 
-        display: inline-flex; 
-        align-items: center; 
-        justify-content: center; 
-        font-weight: 500; 
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 500;
         padding: 0.5rem 0.75rem;
         font-size: 0.875rem;
       }
-      
-      /* Input styles - wireframe */
+
       .input-wrapper { display: flex; flex-direction: column; gap: 0.25rem; }
-      .input-label { font-size: 0.875rem; font-weight: 500; color: #6b7280; }
-      .input-field { 
-        padding: 0.5rem 0.75rem; 
+      .input-label { font-size: 0.875rem; font-weight: 500; color: var(--wire-text-color, #6b7280); }
+      .input-field {
+        padding: 0.5rem 0.75rem;
         width: 100%;
       }
-      
-      /* Card styles - wireframe */
-      .card { 
-        overflow: hidden; 
-        width: 100%;
+
+      .card { overflow: hidden; width: 100%; }
+      .card-header {
+        border-bottom: var(--wire-border-width, 1px) solid var(--wire-border-color, #9ca3af);
+        padding: 1rem; font-weight: 500;
       }
-      .card-header { 
-        border-bottom: 1px solid #9ca3af; 
-        padding: 1rem; 
-        font-weight: 500; 
+      .card-body { padding: 1rem; }
+      .card-footer {
+        border-top: var(--wire-border-width, 1px) solid var(--wire-border-color, #9ca3af);
+        padding: 1rem;
       }
-      .card-body { 
-        padding: 1rem; 
+
+      .badge {
+        display: inline-flex; align-items: center; justify-content: center;
+        border-radius: 9999px; padding: 0.125rem 0.5rem;
+        font-size: 0.75rem; font-weight: 500;
       }
-      .card-footer { 
-        border-top: 1px solid #9ca3af; 
-        padding: 1rem; 
-      }
-      
-      /* Badge styles - wireframe */
-      .badge { 
-        display: inline-flex; 
-        align-items: center; 
-        justify-content: center; 
-        border-radius: 9999px; 
-        padding: 0.125rem 0.5rem; 
-        font-size: 0.75rem; 
-        font-weight: 500; 
-      }
-      
-      /* Avatar styles - wireframe */
-      .avatar { 
-        display: inline-flex; 
-        align-items: center; 
-        justify-content: center; 
-        width: 2.5rem; 
-        height: 2.5rem; 
-        font-size: 1rem;
-        overflow: hidden; 
+
+      .avatar {
+        display: inline-flex; align-items: center; justify-content: center;
+        width: 2.5rem; height: 2.5rem; font-size: 1rem; overflow: hidden;
       }
       .avatar-circle { border-radius: 9999px; }
-      .avatar-square { border-radius: 0.25rem; }
-      .avatar img { 
-        width: 100%; 
-        height: 100%; 
-        object-fit: cover; 
-        opacity: 0.5;
-      }
-      
-      /* Alert styles - wireframe */
-      .alert { 
-        padding: 0.75rem 1rem; 
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-      }
-      .alert-icon {
-        flex-shrink: 0;
-      }
-      .alert-content {
-        flex: 1;
-      }
+      .avatar-square { border-radius: var(--wire-border-radius, 0.25rem); }
+      .avatar img { width: 100%; height: 100%; object-fit: cover; opacity: 0.5; }
+
+      .alert { padding: 0.75rem 1rem; display: flex; align-items: center; gap: 0.5rem; }
+      .alert-icon { flex-shrink: 0; }
+      .alert-content { flex: 1; }
     `;
     this.shadow.appendChild(styleSheet);
   }
   connectedCallback() {
-    this.injectStyles();
     this.render();
   }
   attributeChangedCallback(name, oldValue, newValue) {
@@ -199,9 +163,8 @@ class WireButton extends BaseComponent {
       iconSpan.appendChild(svg);
       buttonDiv.appendChild(iconSpan);
     }
-    const textSpan = document.createElement("span");
-    textSpan.innerHTML = this.innerHTML;
-    buttonDiv.appendChild(textSpan);
+    const slot = document.createElement("slot");
+    buttonDiv.appendChild(slot);
     this.shadow.innerHTML = "";
     this.injectStyles();
     this.shadow.appendChild(buttonDiv);
@@ -351,7 +314,8 @@ class WireBadge extends BaseComponent {
   render() {
     const badge = document.createElement("span");
     badge.className = "badge wireframe-element";
-    badge.innerHTML = this.innerHTML;
+    const slot = document.createElement("slot");
+    badge.appendChild(slot);
     this.shadow.innerHTML = "";
     this.injectStyles();
     this.shadow.appendChild(badge);
@@ -367,13 +331,19 @@ class WireAvatar extends BaseComponent {
   }
   render() {
     const shape = this.getAttribute("shape") || "circle";
+    const initials = this.getAttribute("initials");
     const avatar = document.createElement("div");
     avatar.className = `avatar wireframe-element ${shape === "circle" ? "avatar-circle" : "avatar-square"}`;
-    avatar.innerHTML = `
-      <svg xmlns="http://www.w3.org/2000/svg" width="50%" height="50%" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-      </svg>
-    `;
+    if (initials) {
+      avatar.textContent = initials;
+      avatar.style.fontWeight = "500";
+    } else {
+      avatar.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" width="50%" height="50%" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+        </svg>
+      `;
+    }
     this.shadow.innerHTML = "";
     this.injectStyles();
     this.shadow.appendChild(avatar);
@@ -471,13 +441,6 @@ if (!customElements.get("wire-alert")) {
 }
 // src/components/panel.ts
 class WirePanel extends BaseComponent {
-  constructor() {
-    super();
-  }
-  connectedCallback() {
-    super.connectedCallback();
-    this.render();
-  }
   render() {
     const panel = document.createElement("div");
     panel.className = "wire-panel wireframe-element";
@@ -502,16 +465,11 @@ class WirePanel extends BaseComponent {
     this.shadow.appendChild(panel);
   }
 }
-customElements.define("wire-panel", WirePanel);
+if (!customElements.get("wire-panel")) {
+  customElements.define("wire-panel", WirePanel);
+}
 // src/components/row.ts
 class WireRow extends BaseComponent {
-  constructor() {
-    super();
-  }
-  connectedCallback() {
-    super.connectedCallback();
-    this.render();
-  }
   render() {
     const row = document.createElement("div");
     row.className = "wire-row";
@@ -528,16 +486,11 @@ class WireRow extends BaseComponent {
     this.shadow.appendChild(row);
   }
 }
-customElements.define("wire-row", WireRow);
+if (!customElements.get("wire-row")) {
+  customElements.define("wire-row", WireRow);
+}
 // src/components/column.ts
 class WireColumn extends BaseComponent {
-  constructor() {
-    super();
-  }
-  connectedCallback() {
-    super.connectedCallback();
-    this.render();
-  }
   render() {
     const column = document.createElement("div");
     column.className = "wire-column";
@@ -553,7 +506,9 @@ class WireColumn extends BaseComponent {
     this.shadow.appendChild(column);
   }
 }
-customElements.define("wire-column", WireColumn);
+if (!customElements.get("wire-column")) {
+  customElements.define("wire-column", WireColumn);
+}
 // node_modules/lucide/dist/esm/lucide.js
 var exports_lucide = {};
 __export(exports_lucide, {
@@ -17994,16 +17949,6 @@ class WireIcon extends BaseComponent {
   static get observedAttributes() {
     return ["name", "size"];
   }
-  constructor() {
-    super();
-  }
-  connectedCallback() {
-    super.connectedCallback();
-    this.render();
-  }
-  attributeChangedCallback() {
-    this.render();
-  }
   injectStyles() {
     super.injectStyles();
     const styleSheet = document.createElement("style");
@@ -18068,13 +18013,6 @@ if (!customElements.get("wire-icon")) {
 }
 // src/components/section.ts
 class WireSection extends BaseComponent {
-  constructor() {
-    super();
-  }
-  connectedCallback() {
-    super.connectedCallback();
-    this.render();
-  }
   render() {
     const section = document.createElement("div");
     section.className = "wire-section wireframe-element";
@@ -18100,16 +18038,11 @@ class WireSection extends BaseComponent {
     this.shadow.appendChild(section);
   }
 }
-customElements.define("wire-section", WireSection);
+if (!customElements.get("wire-section")) {
+  customElements.define("wire-section", WireSection);
+}
 // src/components/message.ts
 class WireMessage extends BaseComponent {
-  constructor() {
-    super();
-  }
-  connectedCallback() {
-    super.connectedCallback();
-    this.render();
-  }
   render() {
     const message = document.createElement("div");
     message.className = "wire-message wireframe-element";
@@ -18124,21 +18057,13 @@ class WireMessage extends BaseComponent {
     this.shadow.appendChild(message);
   }
 }
-customElements.define("wire-message", WireMessage);
+if (!customElements.get("wire-message")) {
+  customElements.define("wire-message", WireMessage);
+}
 // src/components/heading.ts
 class WireHeading extends BaseComponent {
   static get observedAttributes() {
     return ["level"];
-  }
-  constructor() {
-    super();
-  }
-  connectedCallback() {
-    super.connectedCallback();
-    this.render();
-  }
-  attributeChangedCallback() {
-    this.render();
   }
   render() {
     const level = this.getAttribute("level") || "1";
@@ -18165,21 +18090,13 @@ class WireHeading extends BaseComponent {
     this.shadow.appendChild(heading);
   }
 }
-customElements.define("wire-heading", WireHeading);
+if (!customElements.get("wire-heading")) {
+  customElements.define("wire-heading", WireHeading);
+}
 // src/components/status-indicator.ts
 class WireStatusIndicator extends BaseComponent {
   static get observedAttributes() {
     return ["status"];
-  }
-  constructor() {
-    super();
-  }
-  connectedCallback() {
-    super.connectedCallback();
-    this.render();
-  }
-  attributeChangedCallback() {
-    this.render();
   }
   render() {
     const container = document.createElement("div");
@@ -18221,16 +18138,11 @@ class WireStatusIndicator extends BaseComponent {
     this.shadow.appendChild(container);
   }
 }
-customElements.define("wire-status-indicator", WireStatusIndicator);
+if (!customElements.get("wire-status-indicator")) {
+  customElements.define("wire-status-indicator", WireStatusIndicator);
+}
 // src/components/accordion.ts
 class WireAccordion extends BaseComponent {
-  constructor() {
-    super();
-  }
-  connectedCallback() {
-    super.connectedCallback();
-    this.render();
-  }
   render() {
     const accordion = document.createElement("div");
     accordion.className = "wire-accordion";
@@ -18247,13 +18159,6 @@ class WireAccordion extends BaseComponent {
 }
 
 class WireAccordionItem extends BaseComponent {
-  constructor() {
-    super();
-  }
-  connectedCallback() {
-    super.connectedCallback();
-    this.render();
-  }
   render() {
     const item = document.createElement("div");
     item.className = "wire-accordion-item wireframe-element";
@@ -18290,21 +18195,17 @@ class WireAccordionItem extends BaseComponent {
     this.shadow.appendChild(item);
   }
 }
-customElements.define("wire-accordion", WireAccordion);
-customElements.define("wire-accordion-item", WireAccordionItem);
+if (!customElements.get("wire-accordion")) {
+  customElements.define("wire-accordion", WireAccordion);
+}
+if (!customElements.get("wire-accordion-item")) {
+  customElements.define("wire-accordion-item", WireAccordionItem);
+}
 // src/components/combobox.ts
 class WireCombobox extends BaseComponent {
-  constructor() {
-    super();
-  }
-  connectedCallback() {
-    super.connectedCallback();
-    this.render();
-  }
   render() {
     const combobox = document.createElement("div");
     combobox.className = "wire-combobox wireframe-element";
-    combobox.style.width = "100%";
     combobox.style.width = "100%";
     combobox.style.position = "relative";
     combobox.style.boxSizing = "border-box";
@@ -18316,7 +18217,6 @@ class WireCombobox extends BaseComponent {
     inputContainer.style.display = "flex";
     inputContainer.style.alignItems = "center";
     inputContainer.style.padding = "8px 12px";
-    inputContainer.style.padding = "4px";
     const inputSlot = document.createElement("slot");
     inputSlot.name = "input";
     inputContainer.appendChild(inputSlot);
@@ -18347,18 +18247,8 @@ class WireCombobox extends BaseComponent {
 }
 
 class WireComboboxOption extends BaseComponent {
-  constructor() {
-    super();
-  }
   static get observedAttributes() {
     return ["selected"];
-  }
-  connectedCallback() {
-    super.connectedCallback();
-    this.render();
-  }
-  attributeChangedCallback() {
-    this.render();
   }
   render() {
     const option = document.createElement("div");
@@ -18386,17 +18276,14 @@ class WireComboboxOption extends BaseComponent {
     this.shadow.appendChild(option);
   }
 }
-customElements.define("wire-combobox", WireCombobox);
-customElements.define("wire-combobox-option", WireComboboxOption);
+if (!customElements.get("wire-combobox")) {
+  customElements.define("wire-combobox", WireCombobox);
+}
+if (!customElements.get("wire-combobox-option")) {
+  customElements.define("wire-combobox-option", WireComboboxOption);
+}
 // src/components/tabs.ts
 class WireTabs extends BaseComponent {
-  constructor() {
-    super();
-  }
-  connectedCallback() {
-    super.connectedCallback();
-    this.render();
-  }
   render() {
     const tabs = document.createElement("div");
     tabs.className = "wire-tabs";
@@ -18424,18 +18311,8 @@ class WireTabs extends BaseComponent {
 }
 
 class WireTab extends BaseComponent {
-  constructor() {
-    super();
-  }
   static get observedAttributes() {
     return ["active"];
-  }
-  connectedCallback() {
-    super.connectedCallback();
-    this.render();
-  }
-  attributeChangedCallback() {
-    this.render();
   }
   render() {
     const tab = document.createElement("div");
@@ -18463,13 +18340,6 @@ class WireTab extends BaseComponent {
 }
 
 class WireTabPanel extends BaseComponent {
-  constructor() {
-    super();
-  }
-  connectedCallback() {
-    super.connectedCallback();
-    this.render();
-  }
   render() {
     const panel = document.createElement("div");
     panel.className = "wire-tab-panel wireframe-element";
@@ -18482,23 +18352,19 @@ class WireTabPanel extends BaseComponent {
     this.shadow.appendChild(panel);
   }
 }
-customElements.define("wire-tabs", WireTabs);
-customElements.define("wire-tab", WireTab);
-customElements.define("wire-tab-panel", WireTabPanel);
+if (!customElements.get("wire-tabs")) {
+  customElements.define("wire-tabs", WireTabs);
+}
+if (!customElements.get("wire-tab")) {
+  customElements.define("wire-tab", WireTab);
+}
+if (!customElements.get("wire-tab-panel")) {
+  customElements.define("wire-tab-panel", WireTabPanel);
+}
 // src/components/checkbox.ts
 class WireCheckbox extends BaseComponent {
-  constructor() {
-    super();
-  }
   static get observedAttributes() {
     return ["checked"];
-  }
-  connectedCallback() {
-    super.connectedCallback();
-    this.render();
-  }
-  attributeChangedCallback() {
-    this.render();
   }
   render() {
     const container = document.createElement("div");
@@ -18533,16 +18399,11 @@ class WireCheckbox extends BaseComponent {
     this.shadow.appendChild(container);
   }
 }
-customElements.define("wire-checkbox", WireCheckbox);
+if (!customElements.get("wire-checkbox")) {
+  customElements.define("wire-checkbox", WireCheckbox);
+}
 // src/components/radio-group.ts
 class WireRadioGroup extends BaseComponent {
-  constructor() {
-    super();
-  }
-  connectedCallback() {
-    super.connectedCallback();
-    this.render();
-  }
   render() {
     const group = document.createElement("div");
     group.className = "wire-radio-group";
@@ -18558,18 +18419,8 @@ class WireRadioGroup extends BaseComponent {
 }
 
 class WireRadioItem extends BaseComponent {
-  constructor() {
-    super();
-  }
   static get observedAttributes() {
     return ["checked"];
-  }
-  connectedCallback() {
-    super.connectedCallback();
-    this.render();
-  }
-  attributeChangedCallback() {
-    this.render();
   }
   render() {
     const container = document.createElement("div");
@@ -18604,17 +18455,14 @@ class WireRadioItem extends BaseComponent {
     this.shadow.appendChild(container);
   }
 }
-customElements.define("wire-radio-group", WireRadioGroup);
-customElements.define("wire-radio-item", WireRadioItem);
+if (!customElements.get("wire-radio-group")) {
+  customElements.define("wire-radio-group", WireRadioGroup);
+}
+if (!customElements.get("wire-radio-item")) {
+  customElements.define("wire-radio-item", WireRadioItem);
+}
 // src/components/select.ts
 class WireSelect extends BaseComponent {
-  constructor() {
-    super();
-  }
-  connectedCallback() {
-    super.connectedCallback();
-    this.render();
-  }
   render() {
     const select = document.createElement("div");
     select.className = "wire-select wireframe-element";
@@ -18660,18 +18508,8 @@ class WireSelect extends BaseComponent {
 }
 
 class WireSelectOption extends BaseComponent {
-  constructor() {
-    super();
-  }
   static get observedAttributes() {
     return ["selected"];
-  }
-  connectedCallback() {
-    super.connectedCallback();
-    this.render();
-  }
-  attributeChangedCallback() {
-    this.render();
   }
   render() {
     const option = document.createElement("div");
@@ -18699,22 +18537,16 @@ class WireSelectOption extends BaseComponent {
     this.shadow.appendChild(option);
   }
 }
-customElements.define("wire-select", WireSelect);
-customElements.define("wire-select-option", WireSelectOption);
+if (!customElements.get("wire-select")) {
+  customElements.define("wire-select", WireSelect);
+}
+if (!customElements.get("wire-select-option")) {
+  customElements.define("wire-select-option", WireSelectOption);
+}
 // src/components/toggle.ts
 class WireToggle extends BaseComponent {
-  constructor() {
-    super();
-  }
   static get observedAttributes() {
     return ["checked"];
-  }
-  connectedCallback() {
-    super.connectedCallback();
-    this.render();
-  }
-  attributeChangedCallback() {
-    this.render();
   }
   injectStyles() {
     super.injectStyles();
@@ -18764,21 +18596,13 @@ class WireToggle extends BaseComponent {
     this.shadow.appendChild(toggle);
   }
 }
-customElements.define("wire-toggle", WireToggle);
+if (!customElements.get("wire-toggle")) {
+  customElements.define("wire-toggle", WireToggle);
+}
 // src/components/slider.ts
 class WireSlider extends BaseComponent {
-  constructor() {
-    super();
-  }
   static get observedAttributes() {
     return ["value", "min", "max"];
-  }
-  connectedCallback() {
-    super.connectedCallback();
-    this.render();
-  }
-  attributeChangedCallback() {
-    this.render();
   }
   render() {
     const slider = document.createElement("div");
@@ -18822,21 +18646,13 @@ class WireSlider extends BaseComponent {
     this.shadow.appendChild(slider);
   }
 }
-customElements.define("wire-slider", WireSlider);
+if (!customElements.get("wire-slider")) {
+  customElements.define("wire-slider", WireSlider);
+}
 // src/components/dialog.ts
 class WireDialog extends BaseComponent {
-  constructor() {
-    super();
-  }
   static get observedAttributes() {
     return ["open"];
-  }
-  connectedCallback() {
-    super.connectedCallback();
-    this.render();
-  }
-  attributeChangedCallback() {
-    this.render();
   }
   render() {
     const container = document.createElement("div");
@@ -18858,7 +18674,6 @@ class WireDialog extends BaseComponent {
     header.style.fontWeight = "500";
     const headerSlot = document.createElement("slot");
     headerSlot.name = "header";
-    headerSlot.textContent = "Dialog Title";
     header.appendChild(headerSlot);
     const content = document.createElement("div");
     content.className = "wire-dialog-content";
@@ -18866,7 +18681,6 @@ class WireDialog extends BaseComponent {
     content.style.flexGrow = "1";
     const contentSlot = document.createElement("slot");
     contentSlot.name = "content";
-    contentSlot.textContent = "Dialog content goes here...";
     content.appendChild(contentSlot);
     const footer = document.createElement("div");
     footer.className = "wire-dialog-footer";
@@ -18877,16 +18691,6 @@ class WireDialog extends BaseComponent {
     footer.style.gap = "8px";
     const footerSlot = document.createElement("slot");
     footerSlot.name = "footer";
-    const cancelButton = document.createElement("div");
-    cancelButton.className = "btn wireframe-element";
-    cancelButton.style.padding = "4px 8px";
-    cancelButton.textContent = "Cancel";
-    const confirmButton = document.createElement("div");
-    confirmButton.className = "btn wireframe-element";
-    confirmButton.style.padding = "4px 8px";
-    confirmButton.textContent = "Confirm";
-    footerSlot.appendChild(cancelButton);
-    footerSlot.appendChild(confirmButton);
     footer.appendChild(footerSlot);
     dialog.appendChild(header);
     dialog.appendChild(content);
@@ -18897,21 +18701,13 @@ class WireDialog extends BaseComponent {
     this.shadow.appendChild(container);
   }
 }
-customElements.define("wire-dialog", WireDialog);
+if (!customElements.get("wire-dialog")) {
+  customElements.define("wire-dialog", WireDialog);
+}
 // src/components/dropdown.ts
 class WireDropdown extends BaseComponent {
-  constructor() {
-    super();
-  }
   static get observedAttributes() {
     return ["open"];
-  }
-  connectedCallback() {
-    super.connectedCallback();
-    this.render();
-  }
-  attributeChangedCallback() {
-    this.render();
   }
   render() {
     const container = document.createElement("div");
@@ -18930,7 +18726,6 @@ class WireDropdown extends BaseComponent {
     trigger.style.cursor = "default";
     const triggerSlot = document.createElement("slot");
     triggerSlot.name = "trigger";
-    triggerSlot.textContent = "Dropdown";
     trigger.appendChild(triggerSlot);
     const chevron = document.createElement("div");
     chevron.innerHTML = `
@@ -18953,13 +18748,6 @@ class WireDropdown extends BaseComponent {
     const contentSlot = document.createElement("slot");
     contentSlot.name = "content";
     content.appendChild(contentSlot);
-    const defaultItems = document.createElement("div");
-    defaultItems.innerHTML = `
-      <div class="wire-dropdown-item wireframe-element" style="padding: 8px 12px; margin-bottom: 2px;">Item 1</div>
-      <div class="wire-dropdown-item wireframe-element" style="padding: 8px 12px; margin-bottom: 2px;">Item 2</div>
-      <div class="wire-dropdown-item wireframe-element" style="padding: 8px 12px;">Item 3</div>
-    `;
-    contentSlot.appendChild(defaultItems);
     container.appendChild(trigger);
     container.appendChild(content);
     this.shadow.innerHTML = "";
@@ -18967,21 +18755,13 @@ class WireDropdown extends BaseComponent {
     this.shadow.appendChild(container);
   }
 }
-customElements.define("wire-dropdown", WireDropdown);
+if (!customElements.get("wire-dropdown")) {
+  customElements.define("wire-dropdown", WireDropdown);
+}
 // src/components/tooltip.ts
 class WireTooltip extends BaseComponent {
-  constructor() {
-    super();
-  }
   static get observedAttributes() {
     return ["position", "visible"];
-  }
-  connectedCallback() {
-    super.connectedCallback();
-    this.render();
-  }
-  attributeChangedCallback() {
-    this.render();
   }
   render() {
     const container = document.createElement("div");
@@ -18996,7 +18776,6 @@ class WireTooltip extends BaseComponent {
     trigger.style.display = "inline-block";
     const triggerSlot = document.createElement("slot");
     triggerSlot.name = "trigger";
-    triggerSlot.textContent = "Hover me";
     trigger.appendChild(triggerSlot);
     const content = document.createElement("div");
     content.className = "wire-tooltip-content wireframe-element";
@@ -19008,7 +18787,6 @@ class WireTooltip extends BaseComponent {
     content.style.marginRight = position === "left" ? "4px" : "0";
     const contentSlot = document.createElement("slot");
     contentSlot.name = "content";
-    contentSlot.textContent = "Tooltip content";
     content.appendChild(contentSlot);
     const isVisible = this.hasAttribute("visible");
     if (!isVisible) {
@@ -19040,21 +18818,13 @@ class WireTooltip extends BaseComponent {
     this.shadow.appendChild(container);
   }
 }
-customElements.define("wire-tooltip", WireTooltip);
+if (!customElements.get("wire-tooltip")) {
+  customElements.define("wire-tooltip", WireTooltip);
+}
 // src/components/progress.ts
 class WireProgress extends BaseComponent {
-  constructor() {
-    super();
-  }
   static get observedAttributes() {
     return ["value", "max"];
-  }
-  connectedCallback() {
-    super.connectedCallback();
-    this.render();
-  }
-  attributeChangedCallback() {
-    this.render();
   }
   render() {
     const progress = document.createElement("div");
@@ -19080,15 +18850,1515 @@ class WireProgress extends BaseComponent {
     this.shadow.appendChild(progress);
   }
 }
-customElements.define("wire-progress", WireProgress);
+if (!customElements.get("wire-progress")) {
+  customElements.define("wire-progress", WireProgress);
+}
+// src/components/table.ts
+class WireTable extends BaseComponent {
+  render() {
+    const table = document.createElement("div");
+    table.className = "wire-table wireframe-element";
+    table.style.width = "100%";
+    table.style.overflow = "hidden";
+    const slot = document.createElement("slot");
+    table.appendChild(slot);
+    this.shadow.innerHTML = "";
+    this.injectStyles();
+    this.shadow.appendChild(table);
+  }
+}
+
+class WireThead extends BaseComponent {
+  render() {
+    const thead = document.createElement("div");
+    thead.className = "wire-thead";
+    thead.style.borderBottom = "1px solid #9ca3af";
+    thead.style.fontWeight = "500";
+    const slot = document.createElement("slot");
+    thead.appendChild(slot);
+    this.shadow.innerHTML = "";
+    this.injectStyles();
+    this.shadow.appendChild(thead);
+  }
+}
+
+class WireTbody extends BaseComponent {
+  render() {
+    const tbody = document.createElement("div");
+    tbody.className = "wire-tbody";
+    const slot = document.createElement("slot");
+    tbody.appendChild(slot);
+    this.shadow.innerHTML = "";
+    this.injectStyles();
+    this.shadow.appendChild(tbody);
+  }
+}
+
+class WireTr extends BaseComponent {
+  render() {
+    const tr = document.createElement("div");
+    tr.className = "wire-tr";
+    tr.style.display = "flex";
+    tr.style.borderBottom = "1px solid #e5e7eb";
+    const slot = document.createElement("slot");
+    tr.appendChild(slot);
+    this.shadow.innerHTML = "";
+    this.injectStyles();
+    this.shadow.appendChild(tr);
+  }
+}
+
+class WireTh extends BaseComponent {
+  render() {
+    const th = document.createElement("div");
+    th.className = "wire-th wireframe-element";
+    th.style.flex = "1";
+    th.style.padding = "8px 12px";
+    th.style.fontWeight = "500";
+    th.style.fontSize = "0.875rem";
+    const slot = document.createElement("slot");
+    th.appendChild(slot);
+    this.shadow.innerHTML = "";
+    this.injectStyles();
+    this.shadow.appendChild(th);
+  }
+}
+
+class WireTd extends BaseComponent {
+  render() {
+    const td = document.createElement("div");
+    td.className = "wire-td wireframe-element";
+    td.style.flex = "1";
+    td.style.padding = "8px 12px";
+    td.style.fontSize = "0.875rem";
+    const slot = document.createElement("slot");
+    td.appendChild(slot);
+    this.shadow.innerHTML = "";
+    this.injectStyles();
+    this.shadow.appendChild(td);
+  }
+}
+if (!customElements.get("wire-table")) {
+  customElements.define("wire-table", WireTable);
+}
+if (!customElements.get("wire-thead")) {
+  customElements.define("wire-thead", WireThead);
+}
+if (!customElements.get("wire-tbody")) {
+  customElements.define("wire-tbody", WireTbody);
+}
+if (!customElements.get("wire-tr")) {
+  customElements.define("wire-tr", WireTr);
+}
+if (!customElements.get("wire-th")) {
+  customElements.define("wire-th", WireTh);
+}
+if (!customElements.get("wire-td")) {
+  customElements.define("wire-td", WireTd);
+}
+// src/components/breadcrumb.ts
+class WireBreadcrumb extends BaseComponent {
+  render() {
+    const nav = document.createElement("nav");
+    nav.className = "wire-breadcrumb";
+    nav.style.display = "flex";
+    nav.style.alignItems = "center";
+    nav.style.gap = "8px";
+    nav.style.fontSize = "0.875rem";
+    const slot = document.createElement("slot");
+    nav.appendChild(slot);
+    this.shadow.innerHTML = "";
+    this.injectStyles();
+    this.shadow.appendChild(nav);
+  }
+}
+
+class WireBreadcrumbItem extends BaseComponent {
+  render() {
+    const item = document.createElement("span");
+    item.className = "wire-breadcrumb-item wireframe-element";
+    item.style.display = "inline-flex";
+    item.style.alignItems = "center";
+    item.style.gap = "8px";
+    item.style.padding = "4px 8px";
+    const slot = document.createElement("slot");
+    item.appendChild(slot);
+    this.shadow.innerHTML = "";
+    this.injectStyles();
+    this.shadow.appendChild(item);
+  }
+}
+if (!customElements.get("wire-breadcrumb")) {
+  customElements.define("wire-breadcrumb", WireBreadcrumb);
+}
+if (!customElements.get("wire-breadcrumb-item")) {
+  customElements.define("wire-breadcrumb-item", WireBreadcrumbItem);
+}
+// src/components/pagination.ts
+class WirePagination extends BaseComponent {
+  static get observedAttributes() {
+    return ["current", "total"];
+  }
+  render() {
+    const container = document.createElement("div");
+    container.className = "wire-pagination";
+    container.style.display = "flex";
+    container.style.alignItems = "center";
+    container.style.gap = "4px";
+    const current = parseInt(this.getAttribute("current") || "1");
+    const total = parseInt(this.getAttribute("total") || "5");
+    const prev = document.createElement("div");
+    prev.className = "wire-pagination-item wireframe-element";
+    prev.style.padding = "6px 10px";
+    prev.style.fontSize = "0.875rem";
+    prev.innerHTML = `
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="m15 18-6-6 6-6"/>
+      </svg>
+    `;
+    container.appendChild(prev);
+    for (let i = 1;i <= total; i++) {
+      const page = document.createElement("div");
+      page.className = "wire-pagination-item wireframe-element";
+      page.style.padding = "6px 10px";
+      page.style.fontSize = "0.875rem";
+      page.style.minWidth = "32px";
+      page.style.textAlign = "center";
+      page.textContent = String(i);
+      if (i === current) {
+        page.style.backgroundColor = "#9ca3af";
+        page.style.color = "#fff";
+      }
+      container.appendChild(page);
+    }
+    const next = document.createElement("div");
+    next.className = "wire-pagination-item wireframe-element";
+    next.style.padding = "6px 10px";
+    next.style.fontSize = "0.875rem";
+    next.innerHTML = `
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="m9 18 6-6-6-6"/>
+      </svg>
+    `;
+    container.appendChild(next);
+    this.shadow.innerHTML = "";
+    this.injectStyles();
+    this.shadow.appendChild(container);
+  }
+}
+if (!customElements.get("wire-pagination")) {
+  customElements.define("wire-pagination", WirePagination);
+}
+// src/components/divider.ts
+class WireDivider extends BaseComponent {
+  static get observedAttributes() {
+    return ["direction"];
+  }
+  render() {
+    const direction = this.getAttribute("direction") || "horizontal";
+    const divider = document.createElement("div");
+    divider.className = "wire-divider wireframe-element";
+    if (direction === "vertical") {
+      divider.style.width = "1px";
+      divider.style.height = "100%";
+      divider.style.minHeight = "24px";
+      divider.style.alignSelf = "stretch";
+    } else {
+      divider.style.width = "100%";
+      divider.style.height = "1px";
+    }
+    divider.style.backgroundColor = "#9ca3af";
+    this.shadow.innerHTML = "";
+    this.injectStyles();
+    this.shadow.appendChild(divider);
+  }
+}
+if (!customElements.get("wire-divider")) {
+  customElements.define("wire-divider", WireDivider);
+}
+// src/components/skeleton.ts
+class WireSkeleton extends BaseComponent {
+  static get observedAttributes() {
+    return ["width", "height", "shape"];
+  }
+  render() {
+    const width = this.getAttribute("width") || "100%";
+    const height = this.getAttribute("height") || "16px";
+    const shape = this.getAttribute("shape") || "rectangle";
+    const skeleton = document.createElement("div");
+    skeleton.className = "wire-skeleton wireframe-element";
+    skeleton.style.width = width;
+    skeleton.style.height = height;
+    skeleton.style.backgroundColor = "#e5e7eb";
+    if (shape === "circle") {
+      skeleton.style.borderRadius = "50%";
+      skeleton.style.width = height;
+    } else if (shape === "text") {
+      skeleton.style.height = "12px";
+      skeleton.style.borderRadius = "4px";
+    } else {
+      skeleton.style.borderRadius = "4px";
+    }
+    this.shadow.innerHTML = "";
+    this.injectStyles();
+    this.shadow.appendChild(skeleton);
+  }
+}
+if (!customElements.get("wire-skeleton")) {
+  customElements.define("wire-skeleton", WireSkeleton);
+}
+// src/components/tree.ts
+class WireTree extends BaseComponent {
+  render() {
+    const tree = document.createElement("div");
+    tree.className = "wire-tree";
+    tree.style.display = "flex";
+    tree.style.flexDirection = "column";
+    tree.style.gap = "2px";
+    const slot = document.createElement("slot");
+    tree.appendChild(slot);
+    this.shadow.innerHTML = "";
+    this.injectStyles();
+    this.shadow.appendChild(tree);
+  }
+}
+
+class WireTreeItem extends BaseComponent {
+  static get observedAttributes() {
+    return ["expanded", "level"];
+  }
+  render() {
+    const level = parseInt(this.getAttribute("level") || "0");
+    const isExpanded = this.hasAttribute("expanded");
+    const item = document.createElement("div");
+    item.className = "wire-tree-item";
+    item.style.display = "flex";
+    item.style.flexDirection = "column";
+    item.style.paddingLeft = `${level * 20}px`;
+    const row = document.createElement("div");
+    row.style.display = "flex";
+    row.style.alignItems = "center";
+    row.style.gap = "4px";
+    row.style.padding = "4px 8px";
+    const indicator = document.createElement("span");
+    indicator.style.width = "16px";
+    indicator.style.height = "16px";
+    indicator.style.display = "inline-flex";
+    indicator.style.alignItems = "center";
+    indicator.style.justifyContent = "center";
+    indicator.style.fontSize = "12px";
+    indicator.textContent = isExpanded ? "v" : ">";
+    row.appendChild(indicator);
+    const labelSlot = document.createElement("slot");
+    labelSlot.name = "label";
+    row.appendChild(labelSlot);
+    item.appendChild(row);
+    const childrenSlot = document.createElement("slot");
+    childrenSlot.name = "children";
+    item.appendChild(childrenSlot);
+    this.shadow.innerHTML = "";
+    this.injectStyles();
+    this.shadow.appendChild(item);
+  }
+}
+if (!customElements.get("wire-tree")) {
+  customElements.define("wire-tree", WireTree);
+}
+if (!customElements.get("wire-tree-item")) {
+  customElements.define("wire-tree-item", WireTreeItem);
+}
+// src/components/timeline.ts
+class WireTimeline extends BaseComponent {
+  render() {
+    const timeline = document.createElement("div");
+    timeline.className = "wire-timeline";
+    timeline.style.display = "flex";
+    timeline.style.flexDirection = "column";
+    timeline.style.gap = "0";
+    const slot = document.createElement("slot");
+    timeline.appendChild(slot);
+    this.shadow.innerHTML = "";
+    this.injectStyles();
+    this.shadow.appendChild(timeline);
+  }
+}
+
+class WireTimelineItem extends BaseComponent {
+  static get observedAttributes() {
+    return ["status"];
+  }
+  render() {
+    const status = this.getAttribute("status") || "default";
+    const item = document.createElement("div");
+    item.className = "wire-timeline-item";
+    item.style.display = "flex";
+    item.style.gap = "12px";
+    item.style.minHeight = "48px";
+    const rail = document.createElement("div");
+    rail.style.display = "flex";
+    rail.style.flexDirection = "column";
+    rail.style.alignItems = "center";
+    rail.style.width = "16px";
+    const dot = document.createElement("div");
+    dot.className = "wire-timeline-dot wireframe-element";
+    dot.style.width = "12px";
+    dot.style.height = "12px";
+    dot.style.borderRadius = "50%";
+    dot.style.flexShrink = "0";
+    if (status === "active") {
+      dot.style.backgroundColor = "#6b7280";
+    } else if (status === "completed") {
+      dot.style.backgroundColor = "#9ca3af";
+    }
+    rail.appendChild(dot);
+    const line = document.createElement("div");
+    line.style.width = "1px";
+    line.style.flex = "1";
+    line.style.backgroundColor = "#9ca3af";
+    line.style.marginTop = "4px";
+    rail.appendChild(line);
+    const content = document.createElement("div");
+    content.style.flex = "1";
+    content.style.paddingBottom = "16px";
+    const contentSlot = document.createElement("slot");
+    content.appendChild(contentSlot);
+    item.appendChild(rail);
+    item.appendChild(content);
+    this.shadow.innerHTML = "";
+    this.injectStyles();
+    this.shadow.appendChild(item);
+  }
+}
+if (!customElements.get("wire-timeline")) {
+  customElements.define("wire-timeline", WireTimeline);
+}
+if (!customElements.get("wire-timeline-item")) {
+  customElements.define("wire-timeline-item", WireTimelineItem);
+}
+// src/components/stepper.ts
+class WireStepper extends BaseComponent {
+  render() {
+    const stepper = document.createElement("div");
+    stepper.className = "wire-stepper";
+    stepper.style.display = "flex";
+    stepper.style.alignItems = "flex-start";
+    stepper.style.gap = "0";
+    const slot = document.createElement("slot");
+    stepper.appendChild(slot);
+    this.shadow.innerHTML = "";
+    this.injectStyles();
+    this.shadow.appendChild(stepper);
+  }
+}
+
+class WireStep extends BaseComponent {
+  static get observedAttributes() {
+    return ["status", "step"];
+  }
+  render() {
+    const status = this.getAttribute("status") || "pending";
+    const step = this.getAttribute("step") || "";
+    const container = document.createElement("div");
+    container.className = "wire-step";
+    container.style.display = "flex";
+    container.style.flexDirection = "column";
+    container.style.alignItems = "center";
+    container.style.flex = "1";
+    container.style.position = "relative";
+    const indicator = document.createElement("div");
+    indicator.className = "wire-step-indicator wireframe-element";
+    indicator.style.width = "28px";
+    indicator.style.height = "28px";
+    indicator.style.borderRadius = "50%";
+    indicator.style.display = "flex";
+    indicator.style.alignItems = "center";
+    indicator.style.justifyContent = "center";
+    indicator.style.fontSize = "0.75rem";
+    indicator.style.fontWeight = "500";
+    if (status === "completed") {
+      indicator.style.backgroundColor = "#9ca3af";
+      indicator.style.color = "#fff";
+      indicator.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+      `;
+    } else if (status === "active") {
+      indicator.style.backgroundColor = "#6b7280";
+      indicator.style.color = "#fff";
+      indicator.textContent = step;
+    } else {
+      indicator.textContent = step;
+    }
+    container.appendChild(indicator);
+    const line = document.createElement("div");
+    line.style.position = "absolute";
+    line.style.top = "14px";
+    line.style.left = "calc(50% + 14px)";
+    line.style.width = "calc(100% - 28px)";
+    line.style.height = "1px";
+    line.style.backgroundColor = status === "completed" ? "#9ca3af" : "#d1d5db";
+    container.appendChild(line);
+    const label = document.createElement("div");
+    label.style.marginTop = "8px";
+    label.style.fontSize = "0.75rem";
+    label.style.textAlign = "center";
+    const labelSlot = document.createElement("slot");
+    label.appendChild(labelSlot);
+    container.appendChild(label);
+    this.shadow.innerHTML = "";
+    this.injectStyles();
+    this.shadow.appendChild(container);
+  }
+}
+if (!customElements.get("wire-stepper")) {
+  customElements.define("wire-stepper", WireStepper);
+}
+if (!customElements.get("wire-step")) {
+  customElements.define("wire-step", WireStep);
+}
+// src/components/chip.ts
+class WireChip extends BaseComponent {
+  static get observedAttributes() {
+    return ["dismissible"];
+  }
+  render() {
+    const chip = document.createElement("div");
+    chip.className = "wire-chip wireframe-element";
+    chip.style.display = "inline-flex";
+    chip.style.alignItems = "center";
+    chip.style.gap = "4px";
+    chip.style.padding = "2px 8px";
+    chip.style.borderRadius = "9999px";
+    chip.style.fontSize = "0.75rem";
+    chip.style.fontWeight = "500";
+    const slot = document.createElement("slot");
+    chip.appendChild(slot);
+    if (this.hasAttribute("dismissible")) {
+      const dismiss = document.createElement("span");
+      dismiss.style.width = "12px";
+      dismiss.style.height = "12px";
+      dismiss.style.display = "inline-flex";
+      dismiss.style.alignItems = "center";
+      dismiss.style.justifyContent = "center";
+      dismiss.style.marginLeft = "2px";
+      dismiss.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 6 6 18"/><path d="m6 6 12 12"/>
+        </svg>
+      `;
+      chip.appendChild(dismiss);
+    }
+    this.shadow.innerHTML = "";
+    this.injectStyles();
+    this.shadow.appendChild(chip);
+  }
+}
+if (!customElements.get("wire-chip")) {
+  customElements.define("wire-chip", WireChip);
+}
+// src/components/drawer.ts
+class WireDrawer extends BaseComponent {
+  static get observedAttributes() {
+    return ["position", "open"];
+  }
+  render() {
+    const position = this.getAttribute("position") || "left";
+    const isOpen = this.hasAttribute("open");
+    const drawer = document.createElement("div");
+    drawer.className = "wire-drawer wireframe-element";
+    drawer.style.width = position === "left" || position === "right" ? "280px" : "100%";
+    drawer.style.height = position === "top" || position === "bottom" ? "200px" : "100%";
+    drawer.style.display = "flex";
+    drawer.style.flexDirection = "column";
+    if (!isOpen) {
+      drawer.style.display = "none";
+    }
+    const header = document.createElement("div");
+    header.className = "wire-drawer-header";
+    header.style.padding = "12px";
+    header.style.borderBottom = "1px solid #9ca3af";
+    header.style.fontWeight = "500";
+    header.style.display = "flex";
+    header.style.justifyContent = "space-between";
+    header.style.alignItems = "center";
+    const headerSlot = document.createElement("slot");
+    headerSlot.name = "header";
+    header.appendChild(headerSlot);
+    const closeBtn = document.createElement("span");
+    closeBtn.style.width = "20px";
+    closeBtn.style.height = "20px";
+    closeBtn.style.display = "inline-flex";
+    closeBtn.style.alignItems = "center";
+    closeBtn.style.justifyContent = "center";
+    closeBtn.innerHTML = `
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M18 6 6 18"/><path d="m6 6 12 12"/>
+      </svg>
+    `;
+    header.appendChild(closeBtn);
+    const content = document.createElement("div");
+    content.className = "wire-drawer-content";
+    content.style.padding = "12px";
+    content.style.flex = "1";
+    const contentSlot = document.createElement("slot");
+    content.appendChild(contentSlot);
+    drawer.appendChild(header);
+    drawer.appendChild(content);
+    this.shadow.innerHTML = "";
+    this.injectStyles();
+    this.shadow.appendChild(drawer);
+  }
+}
+if (!customElements.get("wire-drawer")) {
+  customElements.define("wire-drawer", WireDrawer);
+}
+// src/components/ios/navigation-bar.ts
+class WireIosNavigationBar extends BaseComponent {
+  static get observedAttributes() {
+    return ["title", "show-back"];
+  }
+  render() {
+    const bar = document.createElement("div");
+    bar.className = "wire-ios-navigation-bar wireframe-element";
+    bar.style.display = "flex";
+    bar.style.alignItems = "center";
+    bar.style.justifyContent = "center";
+    bar.style.height = "44px";
+    bar.style.padding = "0 8px";
+    bar.style.position = "relative";
+    bar.style.width = "100%";
+    if (this.hasAttribute("show-back")) {
+      const backBtn = document.createElement("div");
+      backBtn.style.position = "absolute";
+      backBtn.style.left = "8px";
+      backBtn.style.display = "flex";
+      backBtn.style.alignItems = "center";
+      backBtn.style.gap = "2px";
+      backBtn.style.color = "var(--wire-accent-color, #007aff)";
+      backBtn.style.fontSize = "17px";
+      backBtn.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="20" viewBox="0 0 12 20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+          <path d="M10 2L2 10l8 8"/>
+        </svg>
+      `;
+      const backLabel = document.createElement("span");
+      backLabel.textContent = "Back";
+      backLabel.style.fontSize = "17px";
+      backBtn.appendChild(backLabel);
+      bar.appendChild(backBtn);
+    }
+    const title = document.createElement("span");
+    title.style.fontWeight = "600";
+    title.style.fontSize = "17px";
+    title.textContent = this.getAttribute("title") || "Title";
+    bar.appendChild(title);
+    const rightSlot = document.createElement("slot");
+    rightSlot.name = "right";
+    const rightContainer = document.createElement("div");
+    rightContainer.style.position = "absolute";
+    rightContainer.style.right = "8px";
+    rightContainer.appendChild(rightSlot);
+    bar.appendChild(rightContainer);
+    this.shadow.innerHTML = "";
+    this.injectStyles();
+    this.shadow.appendChild(bar);
+  }
+}
+if (!customElements.get("wire-ios-navigation-bar")) {
+  customElements.define("wire-ios-navigation-bar", WireIosNavigationBar);
+}
+// src/components/ios/tab-bar.ts
+class WireIosTabBar extends BaseComponent {
+  render() {
+    const bar = document.createElement("div");
+    bar.className = "wire-ios-tab-bar wireframe-element";
+    bar.style.display = "flex";
+    bar.style.justifyContent = "space-around";
+    bar.style.alignItems = "center";
+    bar.style.height = "49px";
+    bar.style.width = "100%";
+    bar.style.borderTop = "var(--wire-border-width, 0.5px) solid var(--wire-border-color, #c7c7cc)";
+    const slot = document.createElement("slot");
+    bar.appendChild(slot);
+    this.shadow.innerHTML = "";
+    this.injectStyles();
+    this.shadow.appendChild(bar);
+  }
+}
+
+class WireIosTabBarItem extends BaseComponent {
+  static get observedAttributes() {
+    return ["icon", "label", "selected"];
+  }
+  render() {
+    const item = document.createElement("div");
+    item.className = "wire-ios-tab-bar-item";
+    item.style.display = "flex";
+    item.style.flexDirection = "column";
+    item.style.alignItems = "center";
+    item.style.justifyContent = "center";
+    item.style.gap = "2px";
+    item.style.padding = "4px 0";
+    item.style.minWidth = "48px";
+    item.style.flex = "1";
+    const isSelected = this.hasAttribute("selected");
+    const icon = document.createElement("div");
+    icon.style.width = "24px";
+    icon.style.height = "24px";
+    icon.style.display = "flex";
+    icon.style.alignItems = "center";
+    icon.style.justifyContent = "center";
+    icon.style.borderRadius = "4px";
+    icon.innerHTML = `
+      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+      </svg>
+    `;
+    item.appendChild(icon);
+    const label = document.createElement("span");
+    label.style.fontSize = "10px";
+    label.textContent = this.getAttribute("label") || "Item";
+    if (isSelected) {
+      icon.style.color = "var(--wire-accent-color, #007aff)";
+      label.style.color = "var(--wire-accent-color, #007aff)";
+    }
+    item.appendChild(label);
+    this.shadow.innerHTML = "";
+    this.injectStyles();
+    this.shadow.appendChild(item);
+  }
+}
+if (!customElements.get("wire-ios-tab-bar")) {
+  customElements.define("wire-ios-tab-bar", WireIosTabBar);
+}
+if (!customElements.get("wire-ios-tab-bar-item")) {
+  customElements.define("wire-ios-tab-bar-item", WireIosTabBarItem);
+}
+// src/components/ios/table-view.ts
+class WireIosTableView extends BaseComponent {
+  static get observedAttributes() {
+    return ["grouped"];
+  }
+  render() {
+    const table = document.createElement("div");
+    table.className = "wire-ios-table-view";
+    table.style.width = "100%";
+    table.style.display = "flex";
+    table.style.flexDirection = "column";
+    table.style.padding = this.hasAttribute("grouped") ? "16px" : "0";
+    const slot = document.createElement("slot");
+    table.appendChild(slot);
+    this.shadow.innerHTML = "";
+    this.injectStyles();
+    this.shadow.appendChild(table);
+  }
+}
+
+class WireIosTableCell extends BaseComponent {
+  static get observedAttributes() {
+    return ["show-chevron", "label"];
+  }
+  render() {
+    const cell = document.createElement("div");
+    cell.className = "wire-ios-table-cell wireframe-element";
+    cell.style.display = "flex";
+    cell.style.alignItems = "center";
+    cell.style.justifyContent = "space-between";
+    cell.style.padding = "12px 16px";
+    cell.style.width = "100%";
+    cell.style.minHeight = "44px";
+    const left = document.createElement("div");
+    left.style.display = "flex";
+    left.style.flexDirection = "column";
+    left.style.flex = "1";
+    const labelSlot = document.createElement("slot");
+    labelSlot.name = "label";
+    left.appendChild(labelSlot);
+    if (this.hasAttribute("label")) {
+      const label = document.createElement("span");
+      label.style.fontSize = "17px";
+      label.textContent = this.getAttribute("label");
+      left.appendChild(label);
+    }
+    cell.appendChild(left);
+    if (this.hasAttribute("show-chevron")) {
+      const chevron = document.createElement("span");
+      chevron.style.color = "#c7c7cc";
+      chevron.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+          <path d="m9 18 6-6-6-6"/>
+        </svg>
+      `;
+      cell.appendChild(chevron);
+    }
+    this.shadow.innerHTML = "";
+    this.injectStyles();
+    this.shadow.appendChild(cell);
+  }
+}
+if (!customElements.get("wire-ios-table-view")) {
+  customElements.define("wire-ios-table-view", WireIosTableView);
+}
+if (!customElements.get("wire-ios-table-cell")) {
+  customElements.define("wire-ios-table-cell", WireIosTableCell);
+}
+// src/components/ios/segmented-control.ts
+class WireIosSegmentedControl extends BaseComponent {
+  static get observedAttributes() {
+    return ["segments", "selected"];
+  }
+  render() {
+    const container = document.createElement("div");
+    container.className = "wire-ios-segmented-control wireframe-element";
+    container.style.display = "inline-flex";
+    container.style.borderRadius = "8px";
+    container.style.overflow = "hidden";
+    container.style.width = "100%";
+    const segments = (this.getAttribute("segments") || "First,Second,Third").split(",");
+    const selectedIndex = parseInt(this.getAttribute("selected") || "0");
+    segments.forEach((segment, i) => {
+      const seg = document.createElement("div");
+      seg.style.flex = "1";
+      seg.style.textAlign = "center";
+      seg.style.padding = "6px 12px";
+      seg.style.fontSize = "13px";
+      seg.style.fontWeight = "500";
+      seg.style.cursor = "default";
+      seg.style.borderRight = i < segments.length - 1 ? "var(--wire-border-width, 0.5px) solid var(--wire-border-color, #c7c7cc)" : "none";
+      seg.textContent = segment.trim();
+      if (i === selectedIndex) {
+        seg.style.backgroundColor = "var(--wire-accent-color, #007aff)";
+        seg.style.color = "#fff";
+      }
+      container.appendChild(seg);
+    });
+    this.shadow.innerHTML = "";
+    this.injectStyles();
+    this.shadow.appendChild(container);
+  }
+}
+if (!customElements.get("wire-ios-segmented-control")) {
+  customElements.define("wire-ios-segmented-control", WireIosSegmentedControl);
+}
+// src/components/ios/search-bar.ts
+class WireIosSearchBar extends BaseComponent {
+  static get observedAttributes() {
+    return ["placeholder"];
+  }
+  render() {
+    const bar = document.createElement("div");
+    bar.className = "wire-ios-search-bar wireframe-element";
+    bar.style.display = "flex";
+    bar.style.alignItems = "center";
+    bar.style.gap = "8px";
+    bar.style.padding = "8px 12px";
+    bar.style.borderRadius = "10px";
+    bar.style.width = "100%";
+    bar.style.backgroundColor = "var(--wire-bg-color, #f2f2f7)";
+    const icon = document.createElement("span");
+    icon.style.display = "flex";
+    icon.style.color = "#8e8e93";
+    icon.innerHTML = `
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
+      </svg>
+    `;
+    bar.appendChild(icon);
+    const placeholder = document.createElement("span");
+    placeholder.style.fontSize = "17px";
+    placeholder.style.color = "#8e8e93";
+    placeholder.textContent = this.getAttribute("placeholder") || "Search";
+    bar.appendChild(placeholder);
+    this.shadow.innerHTML = "";
+    this.injectStyles();
+    this.shadow.appendChild(bar);
+  }
+}
+if (!customElements.get("wire-ios-search-bar")) {
+  customElements.define("wire-ios-search-bar", WireIosSearchBar);
+}
+// src/components/ios/sheet.ts
+class WireIosSheet extends BaseComponent {
+  static get observedAttributes() {
+    return ["open"];
+  }
+  render() {
+    const isOpen = this.hasAttribute("open");
+    const sheet = document.createElement("div");
+    sheet.className = "wire-ios-sheet wireframe-element";
+    sheet.style.width = "100%";
+    sheet.style.maxWidth = "400px";
+    sheet.style.borderRadius = "var(--wire-border-radius, 0.75rem) var(--wire-border-radius, 0.75rem) 0 0";
+    sheet.style.padding = "12px 16px 24px";
+    sheet.style.display = isOpen ? "flex" : "none";
+    sheet.style.flexDirection = "column";
+    const handle = document.createElement("div");
+    handle.style.width = "36px";
+    handle.style.height = "5px";
+    handle.style.borderRadius = "2.5px";
+    handle.style.backgroundColor = "#c7c7cc";
+    handle.style.margin = "0 auto 12px";
+    handle.style.alignSelf = "center";
+    sheet.appendChild(handle);
+    const content = document.createElement("div");
+    content.style.flex = "1";
+    const slot = document.createElement("slot");
+    content.appendChild(slot);
+    sheet.appendChild(content);
+    this.shadow.innerHTML = "";
+    this.injectStyles();
+    this.shadow.appendChild(sheet);
+  }
+}
+if (!customElements.get("wire-ios-sheet")) {
+  customElements.define("wire-ios-sheet", WireIosSheet);
+}
+// src/components/ios/switch.ts
+class WireIosSwitch extends BaseComponent {
+  static get observedAttributes() {
+    return ["checked"];
+  }
+  render() {
+    const isChecked = this.hasAttribute("checked");
+    const container = document.createElement("div");
+    container.className = "wire-ios-switch";
+    container.style.display = "inline-flex";
+    container.style.alignItems = "center";
+    const track = document.createElement("div");
+    track.style.width = "51px";
+    track.style.height = "31px";
+    track.style.borderRadius = "31px";
+    track.style.position = "relative";
+    track.style.transition = "all 0.2s ease";
+    track.style.backgroundColor = isChecked ? "#34c759" : "#e5e5ea";
+    track.style.border = isChecked ? "none" : "var(--wire-border-width, 0.5px) solid var(--wire-border-color, #c7c7cc)";
+    const thumb = document.createElement("div");
+    thumb.style.width = "27px";
+    thumb.style.height = "27px";
+    thumb.style.borderRadius = "50%";
+    thumb.style.backgroundColor = "#fff";
+    thumb.style.position = "absolute";
+    thumb.style.top = "1px";
+    thumb.style.left = isChecked ? "22px" : "2px";
+    thumb.style.boxShadow = "0 2px 4px rgba(0,0,0,0.15)";
+    thumb.style.transition = "all 0.2s ease";
+    track.appendChild(thumb);
+    container.appendChild(track);
+    this.shadow.innerHTML = "";
+    this.injectStyles();
+    this.shadow.appendChild(container);
+  }
+}
+if (!customElements.get("wire-ios-switch")) {
+  customElements.define("wire-ios-switch", WireIosSwitch);
+}
+// src/components/ios/alert.ts
+class WireIosAlert extends BaseComponent {
+  render() {
+    const container = document.createElement("div");
+    container.className = "wire-ios-alert wireframe-element";
+    container.style.width = "270px";
+    container.style.borderRadius = "14px";
+    container.style.display = "flex";
+    container.style.flexDirection = "column";
+    container.style.overflow = "hidden";
+    container.style.backgroundColor = "#fafafa";
+    container.style.boxShadow = "0 12px 40px rgba(0,0,0,0.15)";
+    const titleSlot = document.createElement("slot");
+    titleSlot.name = "title";
+    const titleContainer = document.createElement("div");
+    titleContainer.style.padding = "20px 16px 8px";
+    titleContainer.style.textAlign = "center";
+    titleContainer.style.fontWeight = "600";
+    titleContainer.style.fontSize = "17px";
+    titleContainer.appendChild(titleSlot);
+    container.appendChild(titleContainer);
+    const messageSlot = document.createElement("slot");
+    messageSlot.name = "message";
+    const messageContainer = document.createElement("div");
+    messageContainer.style.padding = "0 16px 20px";
+    messageContainer.style.textAlign = "center";
+    messageContainer.style.fontSize = "13px";
+    messageContainer.appendChild(messageSlot);
+    container.appendChild(messageContainer);
+    const divider = document.createElement("div");
+    divider.style.borderTop = "var(--wire-border-width, 0.5px) solid var(--wire-border-color, #c7c7cc)";
+    container.appendChild(divider);
+    const buttonRow = document.createElement("div");
+    buttonRow.style.display = "flex";
+    buttonRow.style.height = "44px";
+    const buttonSlot = document.createElement("slot");
+    buttonSlot.name = "buttons";
+    buttonRow.appendChild(buttonSlot);
+    const cancelBtn = document.createElement("div");
+    cancelBtn.style.flex = "1";
+    cancelBtn.style.display = "flex";
+    cancelBtn.style.alignItems = "center";
+    cancelBtn.style.justifyContent = "center";
+    cancelBtn.style.fontSize = "17px";
+    cancelBtn.style.color = "var(--wire-accent-color, #007aff)";
+    cancelBtn.style.fontWeight = "400";
+    cancelBtn.style.cursor = "default";
+    cancelBtn.textContent = "Cancel";
+    const btnDivider = document.createElement("div");
+    btnDivider.style.width = "var(--wire-border-width, 0.5px)";
+    btnDivider.style.backgroundColor = "var(--wire-border-color, #c7c7cc)";
+    const confirmBtn = document.createElement("div");
+    confirmBtn.style.flex = "1";
+    confirmBtn.style.display = "flex";
+    confirmBtn.style.alignItems = "center";
+    confirmBtn.style.justifyContent = "center";
+    confirmBtn.style.fontSize = "17px";
+    confirmBtn.style.color = "var(--wire-accent-color, #007aff)";
+    confirmBtn.style.fontWeight = "600";
+    confirmBtn.style.cursor = "default";
+    confirmBtn.textContent = "OK";
+    buttonRow.appendChild(cancelBtn);
+    buttonRow.appendChild(btnDivider);
+    buttonRow.appendChild(confirmBtn);
+    container.appendChild(buttonRow);
+    this.shadow.innerHTML = "";
+    this.injectStyles();
+    this.shadow.appendChild(container);
+  }
+}
+if (!customElements.get("wire-ios-alert")) {
+  customElements.define("wire-ios-alert", WireIosAlert);
+}
+// src/components/android/top-app-bar.ts
+class WireAndroidTopAppBar extends BaseComponent {
+  static get observedAttributes() {
+    return ["title"];
+  }
+  render() {
+    const bar = document.createElement("div");
+    bar.className = "wire-android-top-app-bar wireframe-element";
+    bar.style.display = "flex";
+    bar.style.alignItems = "center";
+    bar.style.height = "56px";
+    bar.style.padding = "0 4px";
+    bar.style.width = "100%";
+    bar.style.backgroundColor = "var(--wire-accent-color, #6200ee)";
+    bar.style.color = "#fff";
+    bar.style.boxShadow = "0 2px 4px rgba(0,0,0,0.2)";
+    bar.style.border = "none";
+    bar.style.borderRadius = "0";
+    const navIcon = document.createElement("div");
+    navIcon.style.width = "48px";
+    navIcon.style.height = "48px";
+    navIcon.style.display = "flex";
+    navIcon.style.alignItems = "center";
+    navIcon.style.justifyContent = "center";
+    navIcon.innerHTML = `
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/>
+      </svg>
+    `;
+    bar.appendChild(navIcon);
+    const title = document.createElement("span");
+    title.style.flex = "1";
+    title.style.fontSize = "20px";
+    title.style.fontWeight = "500";
+    title.style.paddingLeft = "8px";
+    title.textContent = this.getAttribute("title") || "App Title";
+    bar.appendChild(title);
+    const actionsSlot = document.createElement("slot");
+    actionsSlot.name = "actions";
+    const actionsContainer = document.createElement("div");
+    actionsContainer.style.display = "flex";
+    actionsContainer.style.gap = "4px";
+    actionsContainer.style.paddingRight = "4px";
+    actionsContainer.appendChild(actionsSlot);
+    const searchIcon = document.createElement("div");
+    searchIcon.style.width = "48px";
+    searchIcon.style.height = "48px";
+    searchIcon.style.display = "flex";
+    searchIcon.style.alignItems = "center";
+    searchIcon.style.justifyContent = "center";
+    searchIcon.innerHTML = `
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
+      </svg>
+    `;
+    actionsContainer.appendChild(searchIcon);
+    const moreIcon = document.createElement("div");
+    moreIcon.style.width = "48px";
+    moreIcon.style.height = "48px";
+    moreIcon.style.display = "flex";
+    moreIcon.style.alignItems = "center";
+    moreIcon.style.justifyContent = "center";
+    moreIcon.innerHTML = `
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/>
+      </svg>
+    `;
+    actionsContainer.appendChild(moreIcon);
+    bar.appendChild(actionsContainer);
+    this.shadow.innerHTML = "";
+    this.injectStyles();
+    this.shadow.appendChild(bar);
+  }
+}
+if (!customElements.get("wire-android-top-app-bar")) {
+  customElements.define("wire-android-top-app-bar", WireAndroidTopAppBar);
+}
+// src/components/android/bottom-nav.ts
+class WireAndroidBottomNav extends BaseComponent {
+  render() {
+    const bar = document.createElement("div");
+    bar.className = "wire-android-bottom-nav wireframe-element";
+    bar.style.display = "flex";
+    bar.style.justifyContent = "space-around";
+    bar.style.alignItems = "center";
+    bar.style.height = "56px";
+    bar.style.width = "100%";
+    bar.style.boxShadow = "0 -1px 3px rgba(0,0,0,0.08)";
+    bar.style.borderRadius = "0";
+    bar.style.border = "none";
+    bar.style.borderTop = "1px solid var(--wire-border-color, #e0e0e0)";
+    const slot = document.createElement("slot");
+    bar.appendChild(slot);
+    this.shadow.innerHTML = "";
+    this.injectStyles();
+    this.shadow.appendChild(bar);
+  }
+}
+
+class WireAndroidBottomNavItem extends BaseComponent {
+  static get observedAttributes() {
+    return ["label", "selected"];
+  }
+  render() {
+    const item = document.createElement("div");
+    item.style.display = "flex";
+    item.style.flexDirection = "column";
+    item.style.alignItems = "center";
+    item.style.justifyContent = "center";
+    item.style.gap = "2px";
+    item.style.padding = "6px 12px 8px";
+    item.style.minWidth = "64px";
+    item.style.flex = "1";
+    const isSelected = this.hasAttribute("selected");
+    const icon = document.createElement("div");
+    icon.style.width = "24px";
+    icon.style.height = "24px";
+    icon.style.display = "flex";
+    icon.style.alignItems = "center";
+    icon.style.justifyContent = "center";
+    icon.style.borderRadius = "50%";
+    icon.innerHTML = `
+      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="${isSelected ? "currentColor" : "none"}" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+        <polyline points="9 22 9 12 15 12 15 22"/>
+      </svg>
+    `;
+    item.appendChild(icon);
+    const label = document.createElement("span");
+    label.style.fontSize = "12px";
+    label.style.fontWeight = "500";
+    label.textContent = this.getAttribute("label") || "Item";
+    if (isSelected) {
+      icon.style.color = "var(--wire-accent-color, #6200ee)";
+      label.style.color = "var(--wire-accent-color, #6200ee)";
+    }
+    item.appendChild(label);
+    this.shadow.innerHTML = "";
+    this.injectStyles();
+    this.shadow.appendChild(item);
+  }
+}
+if (!customElements.get("wire-android-bottom-nav")) {
+  customElements.define("wire-android-bottom-nav", WireAndroidBottomNav);
+}
+if (!customElements.get("wire-android-bottom-nav-item")) {
+  customElements.define("wire-android-bottom-nav-item", WireAndroidBottomNavItem);
+}
+// src/components/android/fab.ts
+class WireAndroidFab extends BaseComponent {
+  static get observedAttributes() {
+    return ["icon", "extended"];
+  }
+  render() {
+    const fab = document.createElement("div");
+    fab.className = "wire-android-fab wireframe-element";
+    fab.style.borderRadius = this.hasAttribute("extended") ? "16px" : "50%";
+    fab.style.width = this.hasAttribute("extended") ? "auto" : "56px";
+    fab.style.height = "56px";
+    fab.style.display = "inline-flex";
+    fab.style.alignItems = "center";
+    fab.style.justifyContent = "center";
+    fab.style.gap = "8px";
+    fab.style.padding = this.hasAttribute("extended") ? "0 16px" : "0";
+    fab.style.backgroundColor = "var(--wire-accent-color, #6200ee)";
+    fab.style.color = "#fff";
+    fab.style.boxShadow = "0 3px 5px rgba(0,0,0,0.2), 0 1px 3px rgba(0,0,0,0.12)";
+    fab.style.border = "none";
+    fab.style.cursor = "default";
+    const icon = document.createElement("span");
+    icon.style.display = "flex";
+    icon.innerHTML = `
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+      </svg>
+    `;
+    fab.appendChild(icon);
+    if (this.hasAttribute("extended")) {
+      const label = document.createElement("span");
+      label.style.fontSize = "14px";
+      label.style.fontWeight = "500";
+      label.style.paddingRight = "4px";
+      const slot = document.createElement("slot");
+      label.appendChild(slot);
+      fab.appendChild(label);
+    }
+    this.shadow.innerHTML = "";
+    this.injectStyles();
+    this.shadow.appendChild(fab);
+  }
+}
+if (!customElements.get("wire-android-fab")) {
+  customElements.define("wire-android-fab", WireAndroidFab);
+}
+// src/components/android/snackbar.ts
+class WireAndroidSnackbar extends BaseComponent {
+  static get observedAttributes() {
+    return ["message", "action"];
+  }
+  render() {
+    const snackbar = document.createElement("div");
+    snackbar.className = "wire-android-snackbar wireframe-element";
+    snackbar.style.display = "flex";
+    snackbar.style.alignItems = "center";
+    snackbar.style.justifyContent = "space-between";
+    snackbar.style.padding = "14px 16px";
+    snackbar.style.width = "100%";
+    snackbar.style.maxWidth = "400px";
+    snackbar.style.borderRadius = "4px";
+    snackbar.style.backgroundColor = "#323232";
+    snackbar.style.color = "#fff";
+    snackbar.style.border = "none";
+    snackbar.style.boxShadow = "0 3px 5px rgba(0,0,0,0.2)";
+    snackbar.style.fontSize = "14px";
+    const message = document.createElement("span");
+    message.style.flex = "1";
+    message.textContent = this.getAttribute("message") || "Message text";
+    snackbar.appendChild(message);
+    if (this.hasAttribute("action")) {
+      const action = document.createElement("span");
+      action.style.fontWeight = "500";
+      action.style.color = "#bb86fc";
+      action.style.paddingLeft = "16px";
+      action.style.textTransform = "uppercase";
+      action.style.fontSize = "14px";
+      action.style.cursor = "default";
+      action.textContent = this.getAttribute("action");
+      snackbar.appendChild(action);
+    }
+    this.shadow.innerHTML = "";
+    this.injectStyles();
+    this.shadow.appendChild(snackbar);
+  }
+}
+if (!customElements.get("wire-android-snackbar")) {
+  customElements.define("wire-android-snackbar", WireAndroidSnackbar);
+}
+// src/components/android/navigation-drawer.ts
+class WireAndroidNavigationDrawer extends BaseComponent {
+  static get observedAttributes() {
+    return ["open"];
+  }
+  render() {
+    const isOpen = this.hasAttribute("open");
+    const drawer = document.createElement("div");
+    drawer.className = "wire-android-navigation-drawer wireframe-element";
+    drawer.style.width = "280px";
+    drawer.style.height = "100%";
+    drawer.style.display = isOpen ? "flex" : "none";
+    drawer.style.flexDirection = "column";
+    drawer.style.backgroundColor = "#fff";
+    drawer.style.boxShadow = "0 8px 10px rgba(0,0,0,0.14)";
+    drawer.style.border = "none";
+    drawer.style.borderRadius = "0";
+    const header = document.createElement("div");
+    header.style.padding = "16px";
+    header.style.backgroundColor = "var(--wire-accent-color, #6200ee)";
+    header.style.color = "#fff";
+    header.style.minHeight = "100px";
+    header.style.display = "flex";
+    header.style.flexDirection = "column";
+    header.style.justifyContent = "flex-end";
+    const headerTitle = document.createElement("div");
+    headerTitle.style.fontSize = "14px";
+    headerTitle.style.fontWeight = "500";
+    headerTitle.textContent = "Navigation Drawer";
+    header.appendChild(headerTitle);
+    const headerSubtitle = document.createElement("div");
+    headerSubtitle.style.fontSize = "14px";
+    headerSubtitle.style.opacity = "0.8";
+    headerSubtitle.textContent = "user@example.com";
+    header.appendChild(headerSubtitle);
+    drawer.appendChild(header);
+    const menuSlot = document.createElement("slot");
+    const menu = document.createElement("div");
+    menu.style.display = "flex";
+    menu.style.flexDirection = "column";
+    menu.style.padding = "8px 0";
+    menu.appendChild(menuSlot);
+    const items = ["Inbox", "Starred", "Sent", "Drafts"];
+    items.forEach((itemText, i) => {
+      const item = document.createElement("div");
+      item.style.display = "flex";
+      item.style.alignItems = "center";
+      item.style.gap = "16px";
+      item.style.padding = "12px 16px";
+      item.style.fontSize = "14px";
+      item.style.color = i === 0 ? "var(--wire-accent-color, #6200ee)" : "inherit";
+      item.style.fontWeight = i === 0 ? "500" : "400";
+      const dot = document.createElement("div");
+      dot.style.width = "24px";
+      dot.style.height = "24px";
+      dot.style.display = "flex";
+      dot.style.alignItems = "center";
+      dot.style.justifyContent = "center";
+      dot.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <rect x="3" y="3" width="18" height="18" rx="2"/>
+        </svg>
+      `;
+      item.appendChild(dot);
+      const text = document.createElement("span");
+      text.textContent = itemText;
+      item.appendChild(text);
+      menu.appendChild(item);
+    });
+    drawer.appendChild(menu);
+    this.shadow.innerHTML = "";
+    this.injectStyles();
+    this.shadow.appendChild(drawer);
+  }
+}
+if (!customElements.get("wire-android-navigation-drawer")) {
+  customElements.define("wire-android-navigation-drawer", WireAndroidNavigationDrawer);
+}
+// src/components/android/list-item.ts
+class WireAndroidListItem extends BaseComponent {
+  static get observedAttributes() {
+    return ["title", "subtitle", "trailing"];
+  }
+  render() {
+    const item = document.createElement("div");
+    item.className = "wire-android-list-item wireframe-element";
+    item.style.display = "flex";
+    item.style.alignItems = "center";
+    item.style.gap = "16px";
+    item.style.padding = "8px 16px";
+    item.style.minHeight = "56px";
+    item.style.width = "100%";
+    const iconSlot = document.createElement("slot");
+    iconSlot.name = "icon";
+    const iconContainer = document.createElement("div");
+    iconContainer.style.width = "40px";
+    iconContainer.style.height = "40px";
+    iconContainer.style.borderRadius = "50%";
+    iconContainer.style.display = "flex";
+    iconContainer.style.alignItems = "center";
+    iconContainer.style.justifyContent = "center";
+    iconContainer.style.flexShrink = "0";
+    iconContainer.appendChild(iconSlot);
+    item.appendChild(iconContainer);
+    const textContainer = document.createElement("div");
+    textContainer.style.flex = "1";
+    textContainer.style.display = "flex";
+    textContainer.style.flexDirection = "column";
+    textContainer.style.gap = "2px";
+    const title = document.createElement("span");
+    title.style.fontSize = "16px";
+    title.style.fontWeight = "400";
+    title.textContent = this.getAttribute("title") || "List item title";
+    textContainer.appendChild(title);
+    const subtitle = this.getAttribute("subtitle");
+    if (subtitle) {
+      const sub = document.createElement("span");
+      sub.style.fontSize = "14px";
+      sub.style.opacity = "0.6";
+      sub.textContent = subtitle;
+      textContainer.appendChild(sub);
+    }
+    item.appendChild(textContainer);
+    const trailing = this.getAttribute("trailing");
+    if (trailing) {
+      const trail = document.createElement("span");
+      trail.style.fontSize = "14px";
+      trail.style.opacity = "0.6";
+      trail.style.flexShrink = "0";
+      trail.textContent = trailing;
+      item.appendChild(trail);
+    }
+    this.shadow.innerHTML = "";
+    this.injectStyles();
+    this.shadow.appendChild(item);
+  }
+}
+if (!customElements.get("wire-android-list-item")) {
+  customElements.define("wire-android-list-item", WireAndroidListItem);
+}
+// src/components/android/text-field.ts
+class WireAndroidTextField extends BaseComponent {
+  static get observedAttributes() {
+    return ["label", "variant", "value"];
+  }
+  render() {
+    const variant = this.getAttribute("variant") || "outlined";
+    const container = document.createElement("div");
+    container.className = "wire-android-text-field";
+    container.style.display = "flex";
+    container.style.flexDirection = "column";
+    container.style.gap = "4px";
+    container.style.width = "100%";
+    const input = document.createElement("div");
+    input.className = "wire-android-text-field-input wireframe-element";
+    input.style.display = "flex";
+    input.style.alignItems = "center";
+    input.style.padding = "12px 16px";
+    input.style.minHeight = "56px";
+    input.style.width = "100%";
+    input.style.position = "relative";
+    input.style.borderRadius = variant === "filled" ? "4px 4px 0 0" : "4px";
+    if (variant === "filled") {
+      input.style.backgroundColor = "#f5f5f5";
+      input.style.borderBottom = "2px solid var(--wire-accent-color, #6200ee)";
+      input.style.border = "none";
+      input.style.borderRadius = "4px 4px 0 0";
+    } else {
+      input.style.border = "1px solid var(--wire-border-color, #e0e0e0)";
+    }
+    const label = this.getAttribute("label");
+    const value = this.getAttribute("value");
+    if (value && label) {
+      const topLabel = document.createElement("span");
+      topLabel.style.fontSize = "12px";
+      topLabel.style.color = "var(--wire-accent-color, #6200ee)";
+      topLabel.style.paddingLeft = variant === "filled" ? "0" : "4px";
+      topLabel.textContent = label;
+      container.appendChild(topLabel);
+    }
+    const valueEl = document.createElement("span");
+    valueEl.style.fontSize = "16px";
+    valueEl.textContent = value || label || "Text field";
+    if (!value) {
+      valueEl.style.opacity = "0.6";
+    }
+    input.appendChild(valueEl);
+    container.appendChild(input);
+    this.shadow.innerHTML = "";
+    this.injectStyles();
+    this.shadow.appendChild(container);
+  }
+}
+if (!customElements.get("wire-android-text-field")) {
+  customElements.define("wire-android-text-field", WireAndroidTextField);
+}
+// src/components/android/card.ts
+class WireAndroidCard extends BaseComponent {
+  render() {
+    const card = document.createElement("div");
+    card.className = "wire-android-card wireframe-element";
+    card.style.width = "100%";
+    card.style.borderRadius = "8px";
+    card.style.overflow = "hidden";
+    card.style.display = "flex";
+    card.style.flexDirection = "column";
+    card.style.boxShadow = "var(--wire-shadow, 0 1px 3px rgba(0,0,0,0.12))";
+    card.style.backgroundColor = "var(--wire-bg-color, #fff)";
+    const mediaSlot = document.createElement("slot");
+    mediaSlot.name = "media";
+    const mediaContainer = document.createElement("div");
+    mediaContainer.style.width = "100%";
+    mediaContainer.style.minHeight = "120px";
+    mediaContainer.style.backgroundColor = "#e0e0e0";
+    mediaContainer.style.display = "flex";
+    mediaContainer.style.alignItems = "center";
+    mediaContainer.style.justifyContent = "center";
+    const mediaPlaceholder = document.createElement("span");
+    mediaPlaceholder.style.opacity = "0.4";
+    mediaPlaceholder.textContent = "Media";
+    mediaContainer.appendChild(mediaPlaceholder);
+    mediaContainer.appendChild(mediaSlot);
+    card.appendChild(mediaContainer);
+    const content = document.createElement("div");
+    content.style.padding = "16px";
+    content.style.display = "flex";
+    content.style.flexDirection = "column";
+    content.style.gap = "8px";
+    const titleSlot = document.createElement("slot");
+    titleSlot.name = "title";
+    const titleContainer = document.createElement("div");
+    titleContainer.style.fontSize = "20px";
+    titleContainer.style.fontWeight = "500";
+    titleContainer.appendChild(titleSlot);
+    const subSlot = document.createElement("slot");
+    subSlot.name = "subtitle";
+    const subContainer = document.createElement("div");
+    subContainer.style.fontSize = "14px";
+    subContainer.style.opacity = "0.6";
+    subContainer.appendChild(subSlot);
+    content.appendChild(titleContainer);
+    content.appendChild(subContainer);
+    card.appendChild(content);
+    const actions = document.createElement("div");
+    actions.style.display = "flex";
+    actions.style.gap = "8px";
+    actions.style.padding = "0 8px 8px";
+    const actionSlot = document.createElement("slot");
+    actionSlot.name = "actions";
+    actions.appendChild(actionSlot);
+    const btn1 = document.createElement("span");
+    btn1.style.padding = "8px 12px";
+    btn1.style.fontSize = "14px";
+    btn1.style.fontWeight = "500";
+    btn1.style.color = "var(--wire-accent-color, #6200ee)";
+    btn1.style.textTransform = "uppercase";
+    btn1.textContent = "Action 1";
+    actions.appendChild(btn1);
+    const btn2 = document.createElement("span");
+    btn2.style.padding = "8px 12px";
+    btn2.style.fontSize = "14px";
+    btn2.style.fontWeight = "500";
+    btn2.style.color = "var(--wire-accent-color, #6200ee)";
+    btn2.style.textTransform = "uppercase";
+    btn2.textContent = "Action 2";
+    actions.appendChild(btn2);
+    card.appendChild(actions);
+    this.shadow.innerHTML = "";
+    this.injectStyles();
+    this.shadow.appendChild(card);
+  }
+}
+if (!customElements.get("wire-android-card")) {
+  customElements.define("wire-android-card", WireAndroidCard);
+}
 export {
+  WireTreeItem,
+  WireTree,
+  WireTr,
   WireTooltip,
   WireToggle,
+  WireTimelineItem,
+  WireTimeline,
+  WireThead,
+  WireTh,
+  WireTd,
+  WireTbody,
   WireTabs,
+  WireTable,
   WireTabPanel,
   WireTab,
+  WireStepper,
+  WireStep,
   WireStatusIndicator,
   WireSlider,
+  WireSkeleton,
   WireSelectOption,
   WireSelect,
   WireSection,
@@ -19097,20 +20367,45 @@ export {
   WireRadioGroup,
   WireProgress,
   WirePanel,
+  WirePagination,
   WireMessage,
+  WireIosTableView,
+  WireIosTableCell,
+  WireIosTabBarItem,
+  WireIosTabBar,
+  WireIosSwitch,
+  WireIosSheet,
+  WireIosSegmentedControl,
+  WireIosSearchBar,
+  WireIosNavigationBar,
+  WireIosAlert,
   WireInput,
   WireIcon,
   WireHeading,
   WireDropdown,
+  WireDrawer,
+  WireDivider,
   WireDialog,
   WireComboboxOption,
   WireCombobox,
   WireColumn,
+  WireChip,
   WireCheckbox,
   WireCard,
   WireButton,
+  WireBreadcrumbItem,
+  WireBreadcrumb,
   WireBadge,
   WireAvatar,
+  WireAndroidTopAppBar,
+  WireAndroidTextField,
+  WireAndroidSnackbar,
+  WireAndroidNavigationDrawer,
+  WireAndroidListItem,
+  WireAndroidFab,
+  WireAndroidCard,
+  WireAndroidBottomNavItem,
+  WireAndroidBottomNav,
   WireAlert,
   WireAccordionItem,
   WireAccordion
