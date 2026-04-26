@@ -1,15 +1,6 @@
 import { BaseComponent } from "../core/base-component";
 
 export class WireSelect extends BaseComponent {
-  constructor() {
-    super();
-  }
-
-  connectedCallback() {
-    super.connectedCallback();
-    this.render();
-  }
-
   render(): void {
     const select = document.createElement("div");
     select.className = "wire-select wireframe-element";
@@ -69,21 +60,8 @@ export class WireSelect extends BaseComponent {
 }
 
 export class WireSelectOption extends BaseComponent {
-  constructor() {
-    super();
-  }
-
   static get observedAttributes() {
     return ["selected"];
-  }
-
-  connectedCallback() {
-    super.connectedCallback();
-    this.render();
-  }
-
-  attributeChangedCallback() {
-    this.render();
   }
 
   render(): void {
@@ -122,5 +100,9 @@ export class WireSelectOption extends BaseComponent {
 }
 
 // Register the custom elements
-customElements.define("wire-select", WireSelect);
-customElements.define("wire-select-option", WireSelectOption);
+if (!customElements.get("wire-select")) {
+  customElements.define("wire-select", WireSelect);
+}
+if (!customElements.get("wire-select-option")) {
+  customElements.define("wire-select-option", WireSelectOption);
+}

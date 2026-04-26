@@ -1,15 +1,6 @@
 import { BaseComponent } from '../core/base-component';
 
 export class WireColumn extends BaseComponent {
-  constructor() {
-    super();
-  }
-
-  connectedCallback() {
-    super.connectedCallback();
-    this.render();
-  }
-
   render(): void {
     const column = document.createElement('div');
     column.className = 'wire-column';
@@ -31,4 +22,6 @@ export class WireColumn extends BaseComponent {
 }
 
 // Register the custom element
-customElements.define('wire-column', WireColumn);
+if (!customElements.get('wire-column')) {
+  customElements.define('wire-column', WireColumn);
+}

@@ -1,15 +1,6 @@
 import { BaseComponent } from '../core/base-component';
 
 export class WireMessage extends BaseComponent {
-  constructor() {
-    super();
-  }
-
-  connectedCallback() {
-    super.connectedCallback();
-    this.render();
-  }
-
   render(): void {
     const message = document.createElement('div');
     message.className = 'wire-message wireframe-element';
@@ -30,4 +21,6 @@ export class WireMessage extends BaseComponent {
 }
 
 // Register the custom element
-customElements.define('wire-message', WireMessage);
+if (!customElements.get('wire-message')) {
+  customElements.define('wire-message', WireMessage);
+}

@@ -1,15 +1,6 @@
 import { BaseComponent } from '../core/base-component';
 
 export class WireRow extends BaseComponent {
-  constructor() {
-    super();
-  }
-
-  connectedCallback() {
-    super.connectedCallback();
-    this.render();
-  }
-
   render(): void {
     const row = document.createElement('div');
     row.className = 'wire-row';
@@ -32,4 +23,6 @@ export class WireRow extends BaseComponent {
 }
 
 // Register the custom element
-customElements.define('wire-row', WireRow);
+if (!customElements.get('wire-row')) {
+  customElements.define('wire-row', WireRow);
+}

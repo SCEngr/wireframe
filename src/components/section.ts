@@ -1,15 +1,6 @@
 import { BaseComponent } from "../core/base-component";
 
 export class WireSection extends BaseComponent {
-  constructor() {
-    super();
-  }
-
-  connectedCallback() {
-    super.connectedCallback();
-    this.render();
-  }
-
   render(): void {
     const section = document.createElement("div");
     section.className = "wire-section wireframe-element";
@@ -47,4 +38,6 @@ export class WireSection extends BaseComponent {
 }
 
 // Register the custom element
-customElements.define("wire-section", WireSection);
+if (!customElements.get("wire-section")) {
+  customElements.define("wire-section", WireSection);
+}

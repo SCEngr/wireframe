@@ -12,8 +12,10 @@ export class WireBadge extends BaseComponent {
   render(): void {
     const badge = document.createElement('span');
     badge.className = 'badge wireframe-element';
-    badge.innerHTML = this.innerHTML;
-    
+
+    const slot = document.createElement('slot');
+    badge.appendChild(slot);
+
     this.shadow.innerHTML = '';
     this.injectStyles();
     this.shadow.appendChild(badge);

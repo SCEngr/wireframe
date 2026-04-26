@@ -1,3 +1,5 @@
+// NOTE: This Tailwind config is not used by web components (styles are inline Shadow DOM).
+// It exists for reference if Tailwind is adopted in the future.
 /** @type {import('tailwindcss').Config} */
 export default {
   content: [

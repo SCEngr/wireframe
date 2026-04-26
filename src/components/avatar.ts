@@ -12,16 +12,21 @@ export class WireAvatar extends BaseComponent {
 
   render(): void {
     const shape = this.getAttribute('shape') || 'circle';
-    
+    const initials = this.getAttribute('initials');
+
     const avatar = document.createElement('div');
     avatar.className = `avatar wireframe-element ${shape === 'circle' ? 'avatar-circle' : 'avatar-square'}`;
-    
-    // 使用简单的用户图标
-    avatar.innerHTML = `
-      <svg xmlns="http://www.w3.org/2000/svg" width="50%" height="50%" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-      </svg>
-    `;
+
+    if (initials) {
+      avatar.textContent = initials;
+      avatar.style.fontWeight = '500';
+    } else {
+      avatar.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" width="50%" height="50%" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+        </svg>
+      `;
+    }
     
     this.shadow.innerHTML = '';
     this.injectStyles();

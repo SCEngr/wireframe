@@ -7,19 +7,6 @@ export class WireIcon extends BaseComponent {
     return ['name', 'size'];
   }
 
-  constructor() {
-    super();
-  }
-
-  connectedCallback() {
-    super.connectedCallback();
-    this.render();
-  }
-
-  attributeChangedCallback() {
-    this.render();
-  }
-
   protected injectStyles(): void {
     super.injectStyles();
     const styleSheet = document.createElement("style");

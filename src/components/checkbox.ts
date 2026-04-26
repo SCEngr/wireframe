@@ -1,21 +1,8 @@
 import { BaseComponent } from '../core/base-component';
 
 export class WireCheckbox extends BaseComponent {
-  constructor() {
-    super();
-  }
-
   static get observedAttributes() {
     return ['checked'];
-  }
-
-  connectedCallback() {
-    super.connectedCallback();
-    this.render();
-  }
-
-  attributeChangedCallback() {
-    this.render();
   }
 
   render(): void {
@@ -65,4 +52,6 @@ export class WireCheckbox extends BaseComponent {
 }
 
 // Register the custom element
-customElements.define('wire-checkbox', WireCheckbox);
+if (!customElements.get('wire-checkbox')) {
+  customElements.define('wire-checkbox', WireCheckbox);
+}

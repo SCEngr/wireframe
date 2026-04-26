@@ -1,15 +1,6 @@
 import { BaseComponent } from "../core/base-component";
 
 export class WireAccordion extends BaseComponent {
-  constructor() {
-    super();
-  }
-
-  connectedCallback() {
-    super.connectedCallback();
-    this.render();
-  }
-
   render(): void {
     const accordion = document.createElement("div");
     accordion.className = "wire-accordion";
@@ -30,15 +21,6 @@ export class WireAccordion extends BaseComponent {
 }
 
 export class WireAccordionItem extends BaseComponent {
-  constructor() {
-    super();
-  }
-
-  connectedCallback() {
-    super.connectedCallback();
-    this.render();
-  }
-
   render(): void {
     const item = document.createElement("div");
     item.className = "wire-accordion-item wireframe-element";
@@ -91,5 +73,9 @@ export class WireAccordionItem extends BaseComponent {
 }
 
 // Register the custom elements
-customElements.define("wire-accordion", WireAccordion);
-customElements.define("wire-accordion-item", WireAccordionItem);
+if (!customElements.get("wire-accordion")) {
+  customElements.define("wire-accordion", WireAccordion);
+}
+if (!customElements.get("wire-accordion-item")) {
+  customElements.define("wire-accordion-item", WireAccordionItem);
+}

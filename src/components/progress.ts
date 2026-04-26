@@ -1,21 +1,8 @@
 import { BaseComponent } from "../core/base-component";
 
 export class WireProgress extends BaseComponent {
-  constructor() {
-    super();
-  }
-
   static get observedAttributes() {
     return ["value", "max"];
-  }
-
-  connectedCallback() {
-    super.connectedCallback();
-    this.render();
-  }
-
-  attributeChangedCallback() {
-    this.render();
   }
 
   render(): void {
@@ -54,4 +41,6 @@ export class WireProgress extends BaseComponent {
 }
 
 // Register the custom element
-customElements.define("wire-progress", WireProgress);
+if (!customElements.get("wire-progress")) {
+  customElements.define("wire-progress", WireProgress);
+}

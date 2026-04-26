@@ -1,21 +1,8 @@
 import { BaseComponent } from "../core/base-component";
 
 export class WireTooltip extends BaseComponent {
-  constructor() {
-    super();
-  }
-
   static get observedAttributes() {
     return ["position", "visible"];
-  }
-
-  connectedCallback() {
-    super.connectedCallback();
-    this.render();
-  }
-
-  attributeChangedCallback() {
-    this.render();
   }
 
   render(): void {
@@ -37,7 +24,6 @@ export class WireTooltip extends BaseComponent {
     // Add trigger slot
     const triggerSlot = document.createElement("slot");
     triggerSlot.name = "trigger";
-    triggerSlot.textContent = "Hover me";
     trigger.appendChild(triggerSlot);
 
     // Create tooltip content
@@ -53,7 +39,6 @@ export class WireTooltip extends BaseComponent {
     // Add content slot
     const contentSlot = document.createElement("slot");
     contentSlot.name = "content";
-    contentSlot.textContent = "Tooltip content";
     content.appendChild(contentSlot);
 
     // Check if tooltip is visible
@@ -93,4 +78,6 @@ export class WireTooltip extends BaseComponent {
 }
 
 // Register the custom element
-customElements.define("wire-tooltip", WireTooltip);
+if (!customElements.get("wire-tooltip")) {
+  customElements.define("wire-tooltip", WireTooltip);
+}

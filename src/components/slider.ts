@@ -1,21 +1,8 @@
 import { BaseComponent } from "../core/base-component";
 
 export class WireSlider extends BaseComponent {
-  constructor() {
-    super();
-  }
-
   static get observedAttributes() {
     return ["value", "min", "max"];
-  }
-
-  connectedCallback() {
-    super.connectedCallback();
-    this.render();
-  }
-
-  attributeChangedCallback() {
-    this.render();
   }
 
   render(): void {
@@ -79,4 +66,6 @@ export class WireSlider extends BaseComponent {
 }
 
 // Register the custom element
-customElements.define("wire-slider", WireSlider);
+if (!customElements.get("wire-slider")) {
+  customElements.define("wire-slider", WireSlider);
+}

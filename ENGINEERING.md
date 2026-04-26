@@ -2,88 +2,73 @@
 
 ## Project Overview
 
-Wireframe UI is a line-style UI component library based on Web Components, focused on providing minimalist, non-interactive wireframe components suitable for prototype design and interface demonstrations. Components are presented with simple wireframe outlines, without complex interaction effects and style variations.
+Wireframe UI is a line-style UI component library based on Web Components, focused on providing minimalist wireframe components suitable for prototype design and interface demonstrations. Components are presented with simple wireframe outlines.
 
 ## Technology Stack
 
 - **Language**: TypeScript
-- **Component Technology**: Web Components (using Shadow DOM)
-- **Build Tool**: Bun (for building and packaging)
-- **Output Format**: ES Modules
-- **Styling Approach**: Inline styles (injected via Shadow DOM)
-- **Development Server**: serve (for local preview)
+- **Component Technology**: Web Components (Shadow DOM)
+- **Build Tool**: Bun
+- **Output Format**: ES Modules (also IIFE)
+- **Styling**: Inline styles injected via Shadow DOM (Tailwind config exists but is not used)
+- **Icons**: Lucide (only runtime dependency)
 
 ## Project Structure
 
 ```
 wireframe/
-├── dist/                 # Build output directory
-│   └── index.js          # Packaged component library
-├── src/                  # Source code directory
-│   ├── core/             # Core functionality
-│   │   └── base-component.ts  # Base component class
-│   ├── components/       # UI components
-│   │   ├── button.ts     # Button component
-│   │   ├── input.ts      # Input component
-│   │   ├── card.ts       # Card component
-│   │   ├── badge.ts      # Badge component
-│   │   ├── avatar.ts     # Avatar component
-│   │   └── alert.ts      # Alert component
-│   └── index.ts          # Main entry file
-├── playground/           # Component demo page
-│   └── index.html        # Component showcase and documentation
-└── package.json          # Project configuration
+├── dist/                     # Build output
+│   ├── index.js              # IIFE bundle (bun build)
+│   ├── index.mjs             # ESM bundle
+│   ├── index.min.mjs         # Minified ESM bundle
+│   └── types/                # Generated .d.ts declarations
+├── src/                      # Source code
+│   ├── core/                 # Base component class
+│   │   └── base-component.ts
+│   ├── components/           # All UI components (one file per component)
+│   └── index.ts              # Barrel exports + side-effect imports
+├── playground/               # Component demo/showcase
+│   └── index.html
+├── package.json
+└── tsconfig.json
 ```
 
 ## Component Architecture
 
-All components inherit from the `BaseComponent` class, which provides the following core functionality:
+All components extend `BaseComponent` (`src/core/base-component.ts`), which extends `HTMLElement` and provides:
 
-1. **Shadow DOM Encapsulation**: Each component creates and manages its own Shadow DOM
-2. **Style Injection**: Styles are directly injected into the Shadow DOM via the `injectStyles` method
-3. **Lifecycle Management**: Handles component connection and disconnection events
+1. **Shadow DOM**: Each component creates an open Shadow DOM
+2. **Style injection**: `injectStyles()` adds `<style>` into the Shadow DOM. Components override this to add their own styles, calling `super.injectStyles()` first for the base `.wireframe-element` class
+3. **Render**: `render()` is abstract — each component implements it to build DOM
+4. **Lifecycle**: `connectedCallback` calls `render()`. `attributeChangedCallback` calls `render()` when observed attributes change
 
-Components use a declarative API, configuring component behavior and appearance through HTML attributes.
-
-## Styling System
-
-Component styles have the following characteristics:
-
-1. **Wireframe Style**: All components use simple border outlines
-2. **Unified Style Class**: Uses the `.wireframe-element` class to apply common wireframe styling
-3. **No Interaction Effects**: All mouse hover and click effects are removed
-4. **Non-Editable**: Interactive elements like input fields are designed as non-editable wireframe displays
-
-## Build and Deployment
-
-The project uses Bun as a build tool:
+## Build Commands
 
 ```bash
-# Install dependencies
-npm install
-
-# Build project
-npm run build
-
-# Local preview
-npx serve .
+bun install                  # Install dependencies
+bun run dev                  # Watch mode — rebuilds on changes
+bun run build                # IIFE build → dist/index.js
+bun run build:esm            # ESM build → dist/index.mjs
+bun run build:min            # Minified ESM → dist/index.min.mjs
+bun run build:types          # Generate .d.ts via tsc
+bun run build:all            # All three JS builds + types
+bunx serve playground        # Run playground demo locally
 ```
 
-The build configuration compiles TypeScript source files into a single ES Module, which can be used directly in the browser via `<script type="module">`.
+## Adding a New Component
 
-## Extension Method
-
-To add new components:
-
-1. Create a new component file in the `src/components/` directory
-2. Inherit from the `BaseComponent` class
-3. Implement the `render()` method
-4. Export and register the component in `src/index.ts`
+1. Create `src/components/<name>.ts` extending `BaseComponent`
+2. Implement `render()` — clear `this.shadow.innerHTML`, call `this.injectStyles()`, build DOM, append to `this.shadow`
+3. Override `injectStyles()` if the component needs custom styles (call `super.injectStyles()` first)
+4. Declare `static get observedAttributes()` for reactive HTML attributes
+5. Register at file bottom: `if (!customElements.get("wire-<name>")) { customElements.define("wire-<name>", Wire<Name>); }`
+6. Add `export * from "./components/<name>"` and `import "./components/<name>"` to `src/index.ts`
+7. Add a demo section to `playground/index.html`
 
 ## Design Decisions
 
-1. **Using Web Components**: Provides native component encapsulation and style isolation
-2. **Shadow DOM**: Ensures component styles don't leak or get affected by external styles
-3. **Inline Style Injection**: Avoids external style dependencies, ensuring components maintain consistent appearance in any environment
-4. **ES Modules Format**: Supports modern browsers' native module system, no additional packaging steps required
-5. **Simplified Properties**: Removed unnecessary variants and size properties, focusing on simple wireframe presentation
+1. **Web Components**: Provides native component encapsulation and style isolation
+2. **Shadow DOM**: Component styles don't leak or get affected by external styles
+3. **Inline Style Injection**: Avoids external style dependencies; components maintain consistent appearance in any environment
+4. **ES Modules**: Supports modern browsers' native module system
+5. **Wireframe aesthetic**: Solid borders (#9ca3af), neutral gray text (#6b7280), transparent backgrounds, no hover effects — components are non-interactive display elements

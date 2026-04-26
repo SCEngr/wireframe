@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Wireframe UI</title>
     <script src="../dist/index.mjs" type="module"></script>
+    <link rel="stylesheet" href="../src/themes/platforms.css" />
     <style>
       body {
         font-family: system-ui, -apple-system, sans-serif;
@@ -53,6 +54,23 @@
         margin-bottom: 0.5rem;
         color: #666;
       }
+      .theme-switcher {
+        display: flex;
+        gap: 0.5rem;
+        margin-bottom: 2rem;
+        flex-wrap: wrap;
+      }
+      .theme-btn {
+        padding: 0.5rem 1rem;
+        border: 1px solid #ccc;
+        border-radius: 0.25rem;
+        background: #fff;
+        cursor: pointer;
+        font-size: 0.875rem;
+        transition: all 0.15s;
+      }
+      .theme-btn:hover { background: #f0f0f0; }
+      .theme-btn.active { background: #333; color: #fff; border-color: #333; }
     </style>
   </head>
   <body>
@@ -61,7 +79,22 @@
       <p class="text-gray-600">
         A minimalist wireframe UI component library built with Web Components.
       </p>
+      <div class="theme-switcher" style="margin-top: 1rem;">
+        <button class="theme-btn active" onclick="setTheme('')">Generic</button>
+        <button class="theme-btn" onclick="setTheme('platform-windows')">Windows</button>
+        <button class="theme-btn" onclick="setTheme('platform-macos')">macOS</button>
+        <button class="theme-btn" onclick="setTheme('platform-ios')">iOS</button>
+        <button class="theme-btn" onclick="setTheme('platform-android')">Android</button>
+      </div>
     </header>
+
+    <script>
+      function setTheme(theme) {
+        document.body.className = theme;
+        document.querySelectorAll('.theme-btn').forEach(btn => btn.classList.remove('active'));
+        event.target.classList.add('active');
+      }
+    </script>
 
     <main>
       <!-- Panel Component -->
@@ -845,6 +878,492 @@
 &lt;wire-progress value="70" max="100"&gt;&lt;/wire-progress&gt;
 &lt;wire-progress value="100" max="100"&gt;&lt;/wire-progress&gt;</pre
         >
+      </section>
+
+      <!-- Table Component -->
+      <section class="component-section" id="table">
+        <h2 class="component-title">Table</h2>
+        <p class="component-description">A simple data table with wireframe styling.</p>
+        <div class="component-demo" style="width: 100%">
+          <wire-table style="width: 100%">
+            <wire-thead>
+              <wire-tr>
+                <wire-th>Name</wire-th>
+                <wire-th>Status</wire-th>
+                <wire-th>Role</wire-th>
+              </wire-tr>
+            </wire-thead>
+            <wire-tbody>
+              <wire-tr>
+                <wire-td>Alice Chen</wire-td>
+                <wire-td>Active</wire-td>
+                <wire-td>Designer</wire-td>
+              </wire-tr>
+              <wire-tr>
+                <wire-td>Bob Smith</wire-td>
+                <wire-td>Inactive</wire-td>
+                <wire-td>Developer</wire-td>
+              </wire-tr>
+              <wire-tr>
+                <wire-td>Carol Wu</wire-td>
+                <wire-td>Active</wire-td>
+                <wire-td>Manager</wire-td>
+              </wire-tr>
+            </wire-tbody>
+          </wire-table>
+        </div>
+        <pre class="code-example">
+&lt;wire-table&gt;
+  &lt;wire-thead&gt;
+    &lt;wire-tr&gt;
+      &lt;wire-th&gt;Name&lt;/wire-th&gt;
+      &lt;wire-th&gt;Status&lt;/wire-th&gt;
+      &lt;wire-th&gt;Role&lt;/wire-th&gt;
+    &lt;/wire-tr&gt;
+  &lt;/wire-thead&gt;
+  &lt;wire-tbody&gt;
+    &lt;wire-tr&gt;
+      &lt;wire-td&gt;Alice Chen&lt;/wire-td&gt;
+      &lt;wire-td&gt;Active&lt;/wire-td&gt;
+      &lt;wire-td&gt;Designer&lt;/wire-td&gt;
+    &lt;/wire-tr&gt;
+  &lt;/wire-tbody&gt;
+&lt;/wire-table&gt;</pre>
+      </section>
+
+      <!-- Breadcrumb Component -->
+      <section class="component-section" id="breadcrumb">
+        <h2 class="component-title">Breadcrumb</h2>
+        <p class="component-description">A navigation breadcrumb trail.</p>
+        <div class="component-demo">
+          <wire-breadcrumb>
+            <wire-breadcrumb-item>Home</wire-breadcrumb-item>
+            <span style="color: #9ca3af;">/</span>
+            <wire-breadcrumb-item>Products</wire-breadcrumb-item>
+            <span style="color: #9ca3af;">/</span>
+            <wire-breadcrumb-item>Details</wire-breadcrumb-item>
+          </wire-breadcrumb>
+        </div>
+        <pre class="code-example">
+&lt;wire-breadcrumb&gt;
+  &lt;wire-breadcrumb-item&gt;Home&lt;/wire-breadcrumb-item&gt;
+  &lt;span&gt;/&lt;/span&gt;
+  &lt;wire-breadcrumb-item&gt;Products&lt;/wire-breadcrumb-item&gt;
+  &lt;span&gt;/&lt;/span&gt;
+  &lt;wire-breadcrumb-item&gt;Details&lt;/wire-breadcrumb-item&gt;
+&lt;/wire-breadcrumb&gt;</pre>
+      </section>
+
+      <!-- Pagination Component -->
+      <section class="component-section" id="pagination">
+        <h2 class="component-title">Pagination</h2>
+        <p class="component-description">Page navigation controls.</p>
+        <div class="component-demo">
+          <wire-pagination current="2" total="5"></wire-pagination>
+        </div>
+        <pre class="code-example">
+&lt;wire-pagination current="2" total="5"&gt;&lt;/wire-pagination&gt;</pre>
+      </section>
+
+      <!-- Divider Component -->
+      <section class="component-section" id="divider">
+        <h2 class="component-title">Divider</h2>
+        <p class="component-description">A horizontal or vertical visual divider.</p>
+        <div class="component-demo" style="width: 100%; flex-direction: column;">
+          <wire-divider direction="horizontal" style="width: 100%"></wire-divider>
+          <div style="display: flex; gap: 16px; height: 60px; align-items: stretch;">
+            <span>Left</span>
+            <wire-divider direction="vertical"></wire-divider>
+            <span>Right</span>
+          </div>
+        </div>
+        <pre class="code-example">
+&lt;wire-divider direction="horizontal"&gt;&lt;/wire-divider&gt;
+&lt;wire-divider direction="vertical"&gt;&lt;/wire-divider&gt;</pre>
+      </section>
+
+      <!-- Skeleton Component -->
+      <section class="component-section" id="skeleton">
+        <h2 class="component-title">Skeleton</h2>
+        <p class="component-description">Loading placeholder elements.</p>
+        <div class="component-demo" style="width: 100%; flex-direction: column; gap: 12px;">
+          <wire-skeleton width="100%" height="16px"></wire-skeleton>
+          <wire-skeleton width="80%" height="16px"></wire-skeleton>
+          <wire-skeleton width="60%" height="16px"></wire-skeleton>
+          <div style="display: flex; gap: 8px;">
+            <wire-skeleton shape="circle" width="40px" height="40px"></wire-skeleton>
+            <div style="flex: 1; display: flex; flex-direction: column; gap: 8px;">
+              <wire-skeleton width="60%" height="12px" shape="text"></wire-skeleton>
+              <wire-skeleton width="40%" height="12px" shape="text"></wire-skeleton>
+            </div>
+          </div>
+        </div>
+        <pre class="code-example">
+&lt;wire-skeleton width="100%" height="16px"&gt;&lt;/wire-skeleton&gt;
+&lt;wire-skeleton shape="circle" width="40px" height="40px"&gt;&lt;/wire-skeleton&gt;
+&lt;wire-skeleton width="60%" height="12px" shape="text"&gt;&lt;/wire-skeleton&gt;</pre>
+      </section>
+
+      <!-- Tree Component -->
+      <section class="component-section" id="tree">
+        <h2 class="component-title">Tree</h2>
+        <p class="component-description">A hierarchical tree view.</p>
+        <div class="component-demo" style="width: 100%">
+          <wire-tree style="width: 300px">
+            <wire-tree-item expanded>
+              <span slot="label">Documents</span>
+              <wire-tree-item slot="children" level="1">
+                <span slot="label">Work</span>
+              </wire-tree-item>
+              <wire-tree-item slot="children" level="1" expanded>
+                <span slot="label">Personal</span>
+                <wire-tree-item slot="children" level="2">
+                  <span slot="label">Photos</span>
+                </wire-tree-item>
+                <wire-tree-item slot="children" level="2">
+                  <span slot="label">Notes</span>
+                </wire-tree-item>
+              </wire-tree-item>
+            </wire-tree-item>
+          </wire-tree>
+        </div>
+        <pre class="code-example">
+&lt;wire-tree&gt;
+  &lt;wire-tree-item expanded&gt;
+    &lt;span slot="label"&gt;Documents&lt;/span&gt;
+    &lt;wire-tree-item slot="children" level="1"&gt;
+      &lt;span slot="label"&gt;Work&lt;/span&gt;
+    &lt;/wire-tree-item&gt;
+    &lt;wire-tree-item slot="children" level="1" expanded&gt;
+      &lt;span slot="label"&gt;Personal&lt;/span&gt;
+      &lt;wire-tree-item slot="children" level="2"&gt;
+        &lt;span slot="label"&gt;Photos&lt;/span&gt;
+      &lt;/wire-tree-item&gt;
+    &lt;/wire-tree-item&gt;
+  &lt;/wire-tree-item&gt;
+&lt;/wire-tree&gt;</pre>
+      </section>
+
+      <!-- Timeline Component -->
+      <section class="component-section" id="timeline">
+        <h2 class="component-title">Timeline</h2>
+        <p class="component-description">A vertical timeline for displaying events.</p>
+        <div class="component-demo" style="width: 100%">
+          <wire-timeline style="width: 400px">
+            <wire-timeline-item status="completed">
+              Project kickoff meeting
+            </wire-timeline-item>
+            <wire-timeline-item status="completed">
+              Design phase complete
+            </wire-timeline-item>
+            <wire-timeline-item status="active">
+              Development in progress
+            </wire-timeline-item>
+            <wire-timeline-item>
+              Testing &amp; QA
+            </wire-timeline-item>
+            <wire-timeline-item>
+              Production deployment
+            </wire-timeline-item>
+          </wire-timeline>
+        </div>
+        <pre class="code-example">
+&lt;wire-timeline&gt;
+  &lt;wire-timeline-item status="completed"&gt;Project kickoff meeting&lt;/wire-timeline-item&gt;
+  &lt;wire-timeline-item status="completed"&gt;Design phase complete&lt;/wire-timeline-item&gt;
+  &lt;wire-timeline-item status="active"&gt;Development in progress&lt;/wire-timeline-item&gt;
+  &lt;wire-timeline-item&gt;Testing &amp; QA&lt;/wire-timeline-item&gt;
+&lt;/wire-timeline&gt;</pre>
+      </section>
+
+      <!-- Stepper Component -->
+      <section class="component-section" id="stepper">
+        <h2 class="component-title">Stepper</h2>
+        <p class="component-description">A step indicator for multi-step processes.</p>
+        <div class="component-demo" style="width: 100%">
+          <wire-stepper style="width: 100%">
+            <wire-step status="completed" step="1">Details</wire-step>
+            <wire-step status="active" step="2">Payment</wire-step>
+            <wire-step step="3">Confirm</wire-step>
+            <wire-step step="4">Done</wire-step>
+          </wire-stepper>
+        </div>
+        <pre class="code-example">
+&lt;wire-stepper&gt;
+  &lt;wire-step status="completed" step="1"&gt;Details&lt;/wire-step&gt;
+  &lt;wire-step status="active" step="2"&gt;Payment&lt;/wire-step&gt;
+  &lt;wire-step step="3"&gt;Confirm&lt;/wire-step&gt;
+  &lt;wire-step step="4"&gt;Done&lt;/wire-step&gt;
+&lt;/wire-stepper&gt;</pre>
+      </section>
+
+      <!-- Chip Component -->
+      <section class="component-section" id="chip">
+        <h2 class="component-title">Chip</h2>
+        <p class="component-description">Compact tags for displaying short information.</p>
+        <div class="component-demo">
+          <wire-chip>Label</wire-chip>
+          <wire-chip>Tag</wire-chip>
+          <wire-chip dismissible>Removable</wire-chip>
+          <wire-chip dismissible>Dismiss</wire-chip>
+        </div>
+        <pre class="code-example">
+&lt;wire-chip&gt;Label&lt;/wire-chip&gt;
+&lt;wire-chip dismissible&gt;Removable&lt;/wire-chip&gt;</pre>
+      </section>
+
+      <!-- Drawer Component -->
+      <section class="component-section" id="drawer">
+        <h2 class="component-title">Drawer</h2>
+        <p class="component-description">A slide-in panel from any edge.</p>
+        <div class="component-demo" style="width: 100%">
+          <wire-drawer open position="left" style="height: 200px;">
+            <span slot="header">Drawer Title</span>
+            <p>This is the drawer content area. You can place any content here.</p>
+          </wire-drawer>
+        </div>
+        <pre class="code-example">
+&lt;wire-drawer open position="left"&gt;
+  &lt;span slot="header"&gt;Drawer Title&lt;/span&gt;
+  &lt;p&gt;This is the drawer content area.&lt;/p&gt;
+&lt;/wire-drawer&gt;</pre>
+      </section>
+
+      <!-- ==================== iOS Components ==================== -->
+      <h2 style="margin-top: 3rem; margin-bottom: 1.5rem; padding-bottom: 0.5rem; border-bottom: 2px solid #007aff; color: #007aff;">iOS Components</h2>
+
+      <!-- iOS Navigation Bar -->
+      <section class="component-section" id="ios-nav-bar">
+        <h2 class="component-title">Navigation Bar</h2>
+        <p class="component-description">iOS-style top navigation bar with title, back button, and right action slot.</p>
+        <div class="component-demo" style="width: 100%">
+          <wire-ios-navigation-bar title="Settings" show-back style="width: 375px;">
+            <span slot="right" style="color: var(--wire-accent-color, #007aff); font-size: 17px;">Edit</span>
+          </wire-ios-navigation-bar>
+        </div>
+        <pre class="code-example">
+&lt;wire-ios-navigation-bar title="Settings" show-back&gt;
+  &lt;span slot="right"&gt;Edit&lt;/span&gt;
+&lt;/wire-ios-navigation-bar&gt;</pre>
+      </section>
+
+      <!-- iOS Tab Bar -->
+      <section class="component-section" id="ios-tab-bar">
+        <h2 class="component-title">Tab Bar</h2>
+        <p class="component-description">iOS-style bottom tab bar with labeled items.</p>
+        <div class="component-demo" style="width: 100%">
+          <wire-ios-tab-bar style="width: 375px;">
+            <wire-ios-tab-bar-item icon="home" label="Home" selected></wire-ios-tab-bar-item>
+            <wire-ios-tab-bar-item icon="search" label="Search"></wire-ios-tab-bar-item>
+            <wire-ios-tab-bar-item icon="cart" label="Cart"></wire-ios-tab-bar-item>
+            <wire-ios-tab-bar-item icon="profile" label="Profile"></wire-ios-tab-bar-item>
+          </wire-ios-tab-bar>
+        </div>
+        <pre class="code-example">
+&lt;wire-ios-tab-bar&gt;
+  &lt;wire-ios-tab-bar-item label="Home" selected&gt;&lt;/wire-ios-tab-bar-item&gt;
+  &lt;wire-ios-tab-bar-item label="Search"&gt;&lt;/wire-ios-tab-bar-item&gt;
+  &lt;wire-ios-tab-bar-item label="Cart"&gt;&lt;/wire-ios-tab-bar-item&gt;
+  &lt;wire-ios-tab-bar-item label="Profile"&gt;&lt;/wire-ios-tab-bar-item&gt;
+&lt;/wire-ios-tab-bar&gt;</pre>
+      </section>
+
+      <!-- iOS Table View -->
+      <section class="component-section" id="ios-table-view">
+        <h2 class="component-title">Table View</h2>
+        <p class="component-description">iOS-style grouped table rows with optional chevrons.</p>
+        <div class="component-demo" style="width: 100%">
+          <wire-ios-table-view grouped style="width: 375px;">
+            <wire-ios-table-cell label="Wi-Fi" show-chevron></wire-ios-table-cell>
+            <wire-ios-table-cell label="Bluetooth" show-chevron></wire-ios-table-cell>
+            <wire-ios-table-cell label="Airplane Mode"></wire-ios-table-cell>
+            <wire-ios-table-cell label="Personal Hotspot" show-chevron></wire-ios-table-cell>
+          </wire-ios-table-view>
+        </div>
+        <pre class="code-example">
+&lt;wire-ios-table-view grouped&gt;
+  &lt;wire-ios-table-cell label="Wi-Fi" show-chevron&gt;&lt;/wire-ios-table-cell&gt;
+  &lt;wire-ios-table-cell label="Bluetooth" show-chevron&gt;&lt;/wire-ios-table-cell&gt;
+  &lt;wire-ios-table-cell label="Airplane Mode"&gt;&lt;/wire-ios-table-cell&gt;
+&lt;/wire-ios-table-view&gt;</pre>
+      </section>
+
+      <!-- iOS Segmented Control -->
+      <section class="component-section" id="ios-segmented-control">
+        <h2 class="component-title">Segmented Control</h2>
+        <p class="component-description">iOS-style horizontal segment picker.</p>
+        <div class="component-demo" style="width: 100%">
+          <wire-ios-segmented-control segments="Day,Week,Month,Year" selected="1" style="width: 375px;"></wire-ios-segmented-control>
+        </div>
+        <pre class="code-example">
+&lt;wire-ios-segmented-control segments="Day,Week,Month,Year" selected="1"&gt;&lt;/wire-ios-segmented-control&gt;</pre>
+      </section>
+
+      <!-- iOS Search Bar -->
+      <section class="component-section" id="ios-search-bar">
+        <h2 class="component-title">Search Bar</h2>
+        <p class="component-description">iOS-style rounded search input.</p>
+        <div class="component-demo" style="width: 100%">
+          <wire-ios-search-bar placeholder="Search" style="width: 375px;"></wire-ios-search-bar>
+        </div>
+        <pre class="code-example">
+&lt;wire-ios-search-bar placeholder="Search"&gt;&lt;/wire-ios-search-bar&gt;</pre>
+      </section>
+
+      <!-- iOS Sheet -->
+      <section class="component-section" id="ios-sheet">
+        <h2 class="component-title">Sheet</h2>
+        <p class="component-description">iOS-style bottom sheet with drag handle.</p>
+        <div class="component-demo" style="width: 100%">
+          <wire-ios-sheet open style="width: 375px;">
+            <p style="text-align: center; padding: 16px 0;">Sheet content goes here.<br/>Add any content inside the sheet.</p>
+          </wire-ios-sheet>
+        </div>
+        <pre class="code-example">
+&lt;wire-ios-sheet open&gt;
+  &lt;p&gt;Sheet content goes here.&lt;/p&gt;
+&lt;/wire-ios-sheet&gt;</pre>
+      </section>
+
+      <!-- iOS Switch -->
+      <section class="component-section" id="ios-switch">
+        <h2 class="component-title">Switch</h2>
+        <p class="component-description">iOS-style toggle switch with green active state.</p>
+        <div class="component-demo" style="align-items: center;">
+          <wire-ios-switch></wire-ios-switch>
+          <wire-ios-switch checked></wire-ios-switch>
+        </div>
+        <pre class="code-example">
+&lt;wire-ios-switch&gt;&lt;/wire-ios-switch&gt;
+&lt;wire-ios-switch checked&gt;&lt;/wire-ios-switch&gt;</pre>
+      </section>
+
+      <!-- iOS Alert -->
+      <section class="component-section" id="ios-alert">
+        <h2 class="component-title">Alert</h2>
+        <p class="component-description">iOS-style modal alert dialog with title, message, and buttons.</p>
+        <div class="component-demo" style="width: 100%">
+          <wire-ios-alert>
+            <span slot="title">Alert Title</span>
+            <span slot="message">This is the alert message describing what happened.</span>
+          </wire-ios-alert>
+        </div>
+        <pre class="code-example">
+&lt;wire-ios-alert&gt;
+  &lt;span slot="title"&gt;Alert Title&lt;/span&gt;
+  &lt;span slot="message"&gt;This is the alert message.&lt;/span&gt;
+&lt;/wire-ios-alert&gt;</pre>
+      </section>
+
+      <!-- ==================== Android Components ==================== -->
+      <h2 style="margin-top: 3rem; margin-bottom: 1.5rem; padding-bottom: 0.5rem; border-bottom: 2px solid #6200ee; color: #6200ee;">Android Components</h2>
+
+      <!-- Android Top App Bar -->
+      <section class="component-section" id="android-top-app-bar">
+        <h2 class="component-title">Top App Bar</h2>
+        <p class="component-description">Material-style top app bar with nav icon, title, and action icons.</p>
+        <div class="component-demo" style="width: 100%">
+          <wire-android-top-app-bar title="Inbox" style="width: 400px;"></wire-android-top-app-bar>
+        </div>
+        <pre class="code-example">
+&lt;wire-android-top-app-bar title="Inbox"&gt;&lt;/wire-android-top-app-bar&gt;</pre>
+      </section>
+
+      <!-- Android Bottom Navigation -->
+      <section class="component-section" id="android-bottom-nav">
+        <h2 class="component-title">Bottom Navigation</h2>
+        <p class="component-description">Material-style bottom navigation bar.</p>
+        <div class="component-demo" style="width: 100%">
+          <wire-android-bottom-nav style="width: 400px;">
+            <wire-android-bottom-nav-item label="Home" selected></wire-android-bottom-nav-item>
+            <wire-android-bottom-nav-item label="Search"></wire-android-bottom-nav-item>
+            <wire-android-bottom-nav-item label="Profile"></wire-android-bottom-nav-item>
+          </wire-android-bottom-nav>
+        </div>
+        <pre class="code-example">
+&lt;wire-android-bottom-nav&gt;
+  &lt;wire-android-bottom-nav-item label="Home" selected&gt;&lt;/wire-android-bottom-nav-item&gt;
+  &lt;wire-android-bottom-nav-item label="Search"&gt;&lt;/wire-android-bottom-nav-item&gt;
+  &lt;wire-android-bottom-nav-item label="Profile"&gt;&lt;/wire-android-bottom-nav-item&gt;
+&lt;/wire-android-bottom-nav&gt;</pre>
+      </section>
+
+      <!-- Android FAB -->
+      <section class="component-section" id="android-fab">
+        <h2 class="component-title">Floating Action Button</h2>
+        <p class="component-description">Material FAB with optional extended label.</p>
+        <div class="component-demo" style="align-items: center;">
+          <wire-android-fab></wire-android-fab>
+          <wire-android-fab extended>Create</wire-android-fab>
+        </div>
+        <pre class="code-example">
+&lt;wire-android-fab&gt;&lt;/wire-android-fab&gt;
+&lt;wire-android-fab extended&gt;Create&lt;/wire-android-fab&gt;</pre>
+      </section>
+
+      <!-- Android Snackbar -->
+      <section class="component-section" id="android-snackbar">
+        <h2 class="component-title">Snackbar</h2>
+        <p class="component-description">Material snackbar with message and optional action.</p>
+        <div class="component-demo" style="width: 100%">
+          <wire-android-snackbar message="Item deleted" action="Undo" style="width: 400px;"></wire-android-snackbar>
+        </div>
+        <pre class="code-example">
+&lt;wire-android-snackbar message="Item deleted" action="Undo"&gt;&lt;/wire-android-snackbar&gt;</pre>
+      </section>
+
+      <!-- Android Navigation Drawer -->
+      <section class="component-section" id="android-nav-drawer">
+        <h2 class="component-title">Navigation Drawer</h2>
+        <p class="component-description">Material side navigation drawer with header and menu items.</p>
+        <div class="component-demo" style="width: 100%">
+          <wire-android-navigation-drawer open></wire-android-navigation-drawer>
+        </div>
+        <pre class="code-example">
+&lt;wire-android-navigation-drawer open&gt;&lt;/wire-android-navigation-drawer&gt;</pre>
+      </section>
+
+      <!-- Android List Item -->
+      <section class="component-section" id="android-list-item">
+        <h2 class="component-title">List Item</h2>
+        <p class="component-description">Material one/two-line list item with icon and trailing text.</p>
+        <div class="component-demo" style="width: 100%; flex-direction: column;">
+          <wire-android-list-item title="Single-line item" style="width: 400px;"></wire-android-list-item>
+          <wire-android-list-item title="Two-line item" subtitle="Secondary text here" trailing="Info" style="width: 400px;"></wire-android-list-item>
+        </div>
+        <pre class="code-example">
+&lt;wire-android-list-item title="Single-line item"&gt;&lt;/wire-android-list-item&gt;
+&lt;wire-android-list-item title="Two-line item" subtitle="Secondary text" trailing="Info"&gt;&lt;/wire-android-list-item&gt;</pre>
+      </section>
+
+      <!-- Android Text Field -->
+      <section class="component-section" id="android-text-field">
+        <h2 class="component-title">Text Field</h2>
+        <p class="component-description">Material outlined/filled text field.</p>
+        <div class="component-demo" style="width: 100%; flex-direction: column; gap: 16px;">
+          <wire-android-text-field label="Label" variant="outlined" style="width: 400px;"></wire-android-text-field>
+          <wire-android-text-field label="Filled" variant="filled" value="Input text" style="width: 400px;"></wire-android-text-field>
+        </div>
+        <pre class="code-example">
+&lt;wire-android-text-field label="Label" variant="outlined"&gt;&lt;/wire-android-text-field&gt;
+&lt;wire-android-text-field label="Filled" variant="filled" value="Input text"&gt;&lt;/wire-android-text-field&gt;</pre>
+      </section>
+
+      <!-- Android Card -->
+      <section class="component-section" id="android-card">
+        <h2 class="component-title">Card</h2>
+        <p class="component-description">Material elevated card with media, title, subtitle, and actions.</p>
+        <div class="component-demo" style="width: 100%">
+          <wire-android-card style="width: 344px;">
+            <span slot="title">Card Title</span>
+            <span slot="subtitle">Card subtitle or description text</span>
+          </wire-android-card>
+        </div>
+        <pre class="code-example">
+&lt;wire-android-card&gt;
+  &lt;span slot="title"&gt;Card Title&lt;/span&gt;
+  &lt;span slot="subtitle"&gt;Card subtitle&lt;/span&gt;
+&lt;/wire-android-card&gt;</pre>
       </section>
     </main>
 

@@ -1,21 +1,8 @@
 import { BaseComponent } from "../core/base-component";
 
 export class WireToggle extends BaseComponent {
-  constructor() {
-    super();
-  }
-
   static get observedAttributes() {
     return ["checked"];
-  }
-
-  connectedCallback() {
-    super.connectedCallback();
-    this.render();
-  }
-
-  attributeChangedCallback() {
-    this.render();
   }
 
   protected injectStyles(): void {
@@ -77,4 +64,6 @@ export class WireToggle extends BaseComponent {
 }
 
 // Register the custom element
-customElements.define("wire-toggle", WireToggle);
+if (!customElements.get("wire-toggle")) {
+  customElements.define("wire-toggle", WireToggle);
+}

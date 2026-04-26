@@ -5,19 +5,6 @@ export class WireStatusIndicator extends BaseComponent {
     return ['status'];
   }
 
-  constructor() {
-    super();
-  }
-
-  connectedCallback() {
-    super.connectedCallback();
-    this.render();
-  }
-
-  attributeChangedCallback() {
-    this.render();
-  }
-
   render(): void {
     const container = document.createElement('div');
     container.className = 'wire-status-indicator wireframe-element';
@@ -68,4 +55,6 @@ export class WireStatusIndicator extends BaseComponent {
 }
 
 // Register the custom element
-customElements.define('wire-status-indicator', WireStatusIndicator);
+if (!customElements.get('wire-status-indicator')) {
+  customElements.define('wire-status-indicator', WireStatusIndicator);
+}

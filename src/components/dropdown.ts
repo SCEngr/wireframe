@@ -1,21 +1,8 @@
 import { BaseComponent } from "../core/base-component";
 
 export class WireDropdown extends BaseComponent {
-  constructor() {
-    super();
-  }
-
   static get observedAttributes() {
     return ["open"];
-  }
-
-  connectedCallback() {
-    super.connectedCallback();
-    this.render();
-  }
-
-  attributeChangedCallback() {
-    this.render();
   }
 
   render(): void {
@@ -39,7 +26,6 @@ export class WireDropdown extends BaseComponent {
     // Add trigger slot
     const triggerSlot = document.createElement("slot");
     triggerSlot.name = "trigger";
-    triggerSlot.textContent = "Dropdown";
     trigger.appendChild(triggerSlot);
 
     // Add chevron icon
@@ -71,15 +57,6 @@ export class WireDropdown extends BaseComponent {
     contentSlot.name = "content";
     content.appendChild(contentSlot);
 
-    // Create default dropdown items if no content is provided
-    const defaultItems = document.createElement("div");
-    defaultItems.innerHTML = `
-      <div class="wire-dropdown-item wireframe-element" style="padding: 8px 12px; margin-bottom: 2px;">Item 1</div>
-      <div class="wire-dropdown-item wireframe-element" style="padding: 8px 12px; margin-bottom: 2px;">Item 2</div>
-      <div class="wire-dropdown-item wireframe-element" style="padding: 8px 12px;">Item 3</div>
-    `;
-    contentSlot.appendChild(defaultItems);
-
     // Add elements to container
     container.appendChild(trigger);
     container.appendChild(content);
@@ -92,4 +69,6 @@ export class WireDropdown extends BaseComponent {
 }
 
 // Register the custom element
-customElements.define("wire-dropdown", WireDropdown);
+if (!customElements.get("wire-dropdown")) {
+  customElements.define("wire-dropdown", WireDropdown);
+}

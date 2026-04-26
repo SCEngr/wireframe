@@ -1,15 +1,6 @@
 import { BaseComponent } from '../core/base-component';
 
 export class WireRadioGroup extends BaseComponent {
-  constructor() {
-    super();
-  }
-
-  connectedCallback() {
-    super.connectedCallback();
-    this.render();
-  }
-
   render(): void {
     const group = document.createElement('div');
     group.className = 'wire-radio-group';
@@ -29,21 +20,8 @@ export class WireRadioGroup extends BaseComponent {
 }
 
 export class WireRadioItem extends BaseComponent {
-  constructor() {
-    super();
-  }
-
   static get observedAttributes() {
     return ['checked'];
-  }
-
-  connectedCallback() {
-    super.connectedCallback();
-    this.render();
-  }
-
-  attributeChangedCallback() {
-    this.render();
   }
 
   render(): void {
@@ -93,5 +71,9 @@ export class WireRadioItem extends BaseComponent {
 }
 
 // Register the custom elements
-customElements.define('wire-radio-group', WireRadioGroup);
-customElements.define('wire-radio-item', WireRadioItem);
+if (!customElements.get('wire-radio-group')) {
+  customElements.define('wire-radio-group', WireRadioGroup);
+}
+if (!customElements.get('wire-radio-item')) {
+  customElements.define('wire-radio-item', WireRadioItem);
+}

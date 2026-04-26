@@ -21,7 +21,7 @@
     "build:playground": "bun build playground/index.mjs --outdir=playground/dist",
     "build:complete": "bun run build:all && bun run build:playground",
     "serve": "npx serve .",
-    "playground": "bunx serve playground",
+    "playground": "bunx serve .",
     "prepublishOnly": "bun run build:all",
     "publish": "npm publish --access=public"
   },

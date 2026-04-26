@@ -5,19 +5,6 @@ export class WireHeading extends BaseComponent {
     return ['level'];
   }
 
-  constructor() {
-    super();
-  }
-
-  connectedCallback() {
-    super.connectedCallback();
-    this.render();
-  }
-
-  attributeChangedCallback() {
-    this.render();
-  }
-
   render(): void {
     const level = this.getAttribute('level') || '1';
     const validLevels = ['1', '2', '3', '4', '5', '6'];
@@ -53,4 +40,6 @@ export class WireHeading extends BaseComponent {
 }
 
 // Register the custom element
-customElements.define('wire-heading', WireHeading);
+if (!customElements.get('wire-heading')) {
+  customElements.define('wire-heading', WireHeading);
+}

@@ -1,0 +1,71 @@
+/* ============================================
+   Wireframe Platform Themes
+   Apply a platform class to <body> or <html>:
+     <body class="platform-windows">
+     <body class="platform-macos">
+     <body class="platform-ios">
+     <body class="platform-android">
+
+   CSS custom properties pass through Shadow DOM
+   and theme all wireframe components automatically.
+   ============================================ */
+
+/* --- Default (Generic Wireframe) --- */
+:root {
+  --wire-border-width: 1px;
+  --wire-border-color: #9ca3af;
+  --wire-border-radius: 0.25rem;
+  --wire-text-color: #6b7280;
+  --wire-accent-color: #9ca3af;
+  --wire-bg-color: transparent;
+  --wire-font-family: system-ui, -apple-system, sans-serif;
+  --wire-shadow: none;
+}
+
+/* --- Windows --- */
+.platform-windows {
+  --wire-border-width: 1px;
+  --wire-border-color: #8a8a8a;
+  --wire-border-radius: 0;
+  --wire-text-color: #1a1a1a;
+  --wire-accent-color: #0078d4;
+  --wire-bg-color: #f3f3f3;
+  --wire-font-family: "Segoe UI", system-ui, sans-serif;
+  --wire-shadow: none;
+}
+
+/* --- macOS --- */
+.platform-macos {
+  --wire-border-width: 1px;
+  --wire-border-color: #d1d1d1;
+  --wire-border-radius: 0.5rem;
+  --wire-text-color: #3a3a3a;
+  --wire-accent-color: #007aff;
+  --wire-bg-color: #f6f6f6;
+  --wire-font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+  --wire-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+/* --- iOS --- */
+.platform-ios {
+  --wire-border-width: 0.5px;
+  --wire-border-color: #c7c7cc;
+  --wire-border-radius: 0.75rem;
+  --wire-text-color: #1c1c1e;
+  --wire-accent-color: #007aff;
+  --wire-bg-color: #f2f2f7;
+  --wire-font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+  --wire-shadow: none;
+}
+
+/* --- Android (Material Design) --- */
+.platform-android {
+  --wire-border-width: 1px;
+  --wire-border-color: #e0e0e0;
+  --wire-border-radius: 0.25rem;
+  --wire-text-color: #1d1d1d;
+  --wire-accent-color: #6200ee;
+  --wire-bg-color: #ffffff;
+  --wire-font-family: "Roboto", system-ui, sans-serif;
+  --wire-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.08);
+}

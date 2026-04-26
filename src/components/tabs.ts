@@ -1,15 +1,6 @@
 import { BaseComponent } from '../core/base-component';
 
 export class WireTabs extends BaseComponent {
-  constructor() {
-    super();
-  }
-
-  connectedCallback() {
-    super.connectedCallback();
-    this.render();
-  }
-
   render(): void {
     const tabs = document.createElement('div');
     tabs.className = 'wire-tabs';
@@ -49,21 +40,8 @@ export class WireTabs extends BaseComponent {
 }
 
 export class WireTab extends BaseComponent {
-  constructor() {
-    super();
-  }
-
   static get observedAttributes() {
     return ['active'];
-  }
-
-  connectedCallback() {
-    super.connectedCallback();
-    this.render();
-  }
-
-  attributeChangedCallback() {
-    this.render();
   }
 
   render(): void {
@@ -99,15 +77,6 @@ export class WireTab extends BaseComponent {
 }
 
 export class WireTabPanel extends BaseComponent {
-  constructor() {
-    super();
-  }
-
-  connectedCallback() {
-    super.connectedCallback();
-    this.render();
-  }
-
   render(): void {
     const panel = document.createElement('div');
     panel.className = 'wire-tab-panel wireframe-element';
@@ -126,6 +95,12 @@ export class WireTabPanel extends BaseComponent {
 }
 
 // Register the custom elements
-customElements.define('wire-tabs', WireTabs);
-customElements.define('wire-tab', WireTab);
-customElements.define('wire-tab-panel', WireTabPanel);
+if (!customElements.get('wire-tabs')) {
+  customElements.define('wire-tabs', WireTabs);
+}
+if (!customElements.get('wire-tab')) {
+  customElements.define('wire-tab', WireTab);
+}
+if (!customElements.get('wire-tab-panel')) {
+  customElements.define('wire-tab-panel', WireTabPanel);
+}

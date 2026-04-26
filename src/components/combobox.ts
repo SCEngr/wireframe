@@ -1,19 +1,9 @@
 import { BaseComponent } from "../core/base-component";
 
 export class WireCombobox extends BaseComponent {
-  constructor() {
-    super();
-  }
-
-  connectedCallback() {
-    super.connectedCallback();
-    this.render();
-  }
-
   render(): void {
     const combobox = document.createElement("div");
     combobox.className = "wire-combobox wireframe-element";
-    combobox.style.width = "100%";
     combobox.style.width = "100%";
     combobox.style.position = "relative";
     combobox.style.boxSizing = "border-box";
@@ -27,7 +17,6 @@ export class WireCombobox extends BaseComponent {
     inputContainer.style.display = "flex";
     inputContainer.style.alignItems = "center";
     inputContainer.style.padding = "8px 12px";
-    inputContainer.style.padding = "4px";
 
     // Add input slot
     const inputSlot = document.createElement("slot");
@@ -70,21 +59,8 @@ export class WireCombobox extends BaseComponent {
 }
 
 export class WireComboboxOption extends BaseComponent {
-  constructor() {
-    super();
-  }
-
   static get observedAttributes() {
     return ["selected"];
-  }
-
-  connectedCallback() {
-    super.connectedCallback();
-    this.render();
-  }
-
-  attributeChangedCallback() {
-    this.render();
   }
 
   render(): void {
@@ -123,5 +99,9 @@ export class WireComboboxOption extends BaseComponent {
 }
 
 // Register the custom elements
-customElements.define("wire-combobox", WireCombobox);
-customElements.define("wire-combobox-option", WireComboboxOption);
+if (!customElements.get("wire-combobox")) {
+  customElements.define("wire-combobox", WireCombobox);
+}
+if (!customElements.get("wire-combobox-option")) {
+  customElements.define("wire-combobox-option", WireComboboxOption);
+}

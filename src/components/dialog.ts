@@ -1,21 +1,8 @@
 import { BaseComponent } from "../core/base-component";
 
 export class WireDialog extends BaseComponent {
-  constructor() {
-    super();
-  }
-
   static get observedAttributes() {
     return ["open"];
-  }
-
-  connectedCallback() {
-    super.connectedCallback();
-    this.render();
-  }
-
-  attributeChangedCallback() {
-    this.render();
   }
 
   render(): void {
@@ -45,7 +32,6 @@ export class WireDialog extends BaseComponent {
     // Add header slot
     const headerSlot = document.createElement("slot");
     headerSlot.name = "header";
-    headerSlot.textContent = "Dialog Title";
     header.appendChild(headerSlot);
 
     // Create dialog content
@@ -57,7 +43,6 @@ export class WireDialog extends BaseComponent {
     // Add content slot
     const contentSlot = document.createElement("slot");
     contentSlot.name = "content";
-    contentSlot.textContent = "Dialog content goes here...";
     content.appendChild(contentSlot);
 
     // Create dialog footer
@@ -72,20 +57,6 @@ export class WireDialog extends BaseComponent {
     // Add footer slot
     const footerSlot = document.createElement("slot");
     footerSlot.name = "footer";
-    
-    // Create default buttons for the footer
-    const cancelButton = document.createElement("div");
-    cancelButton.className = "btn wireframe-element";
-    cancelButton.style.padding = "4px 8px";
-    cancelButton.textContent = "Cancel";
-    
-    const confirmButton = document.createElement("div");
-    confirmButton.className = "btn wireframe-element";
-    confirmButton.style.padding = "4px 8px";
-    confirmButton.textContent = "Confirm";
-    
-    footerSlot.appendChild(cancelButton);
-    footerSlot.appendChild(confirmButton);
     footer.appendChild(footerSlot);
 
     // Add all sections to dialog
@@ -104,4 +75,6 @@ export class WireDialog extends BaseComponent {
 }
 
 // Register the custom element
-customElements.define("wire-dialog", WireDialog);
+if (!customElements.get("wire-dialog")) {
+  customElements.define("wire-dialog", WireDialog);
+}

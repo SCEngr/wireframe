@@ -93,10 +93,9 @@ export class WireButton extends BaseComponent {
       buttonDiv.appendChild(iconSpan);
     }
 
-    // Add text content
-    const textSpan = document.createElement("span");
-    textSpan.innerHTML = this.innerHTML;
-    buttonDiv.appendChild(textSpan);
+    // Add slot for text content
+    const slot = document.createElement("slot");
+    buttonDiv.appendChild(slot);
 
     this.shadow.innerHTML = "";
     this.injectStyles();
